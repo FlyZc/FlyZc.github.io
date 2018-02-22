@@ -37,8 +37,7 @@ ContentResolver 类来完成对数据的增删改查操作。
 ```
 
 &emsp;&emsp;`getContentResolver()` 方法经过层层调用来到 ContextImpl 类，得到的返回值是在 ContextImpl 对象创建过程中就创建好的 ApplicationContentResolver 类型的对象。
-&emsp;&emsp;而在 query() 方法中，首先调用`ContentResolver.acquireUnstableProvider()`方法，试图通过 uri 获取 unstableProvider 对象，`CR.acquireUnstableProvider()`方法是通过调用 `ACR.acquireUnstableProvider()`来实现的。
-`ACR.acquireUnstableProvider()`方法会返回一个 IContentProvider 类型的对象，而在该方法中，最终会调用到`ActivityThread.acquireProvider()`方法。
+&emsp;&emsp;而在 query() 方法中，首先调用`ContentResolver.acquireUnstableProvider()`方法，试图通过 uri 获取 unstableProvider 对象，`CR.acquireUnstableProvider()`方法是通过调用 `ACR.acquireUnstableProvider()`来实现的。`ACR.acquireUnstableProvider()`方法会返回一个 IContentProvider 类型的对象，而在该方法中，最终会调用到`ActivityThread.acquireProvider()`方法。
 ```java
     CR.query()
         CR.acquireUnstableProvider()
@@ -90,9 +89,7 @@ ContentResolver 类来完成对数据的增删改查操作。
         AT.installProviderAuthoritiesLocked()
 ```
 
-&emsp;&emsp;上述步骤如果获取到的 unstableProvider 为空，直接返回。获取到 unstableProvider 对象后，执行 query 操作。`ContentProviderProxy.query()`方法里通过调用`mRemote.transact()`方法发送给 Binder 服务端， Binder 服务端
-通过`CPN.onTransact()`交由`Transport.query()`处理， Transport 类继承 ContentProvider 类。到这里真正调用了目标 
-provider的`query()`方法。
+&emsp;&emsp;上述步骤如果获取到的 unstableProvider 为空，直接返回。获取到 unstableProvider 对象后，执行 query 操作。`ContentProviderProxy.query()`方法里通过调用`mRemote.transact()`方法发送给 Binder 服务端， Binder 服务端通过`CPN.onTransact()`交由`Transport.query()`处理， Transport 类继承 ContentProvider 类。到这里真正调用了目标 provider的`query()`方法。
 
 &emsp;&emsp;在查询的过程中如果抛出 DeadObjectException 异常，那么表示 ContentProvider 所在进程死亡，接下来尝试 获取 stable 的 ContentProvider。
 
@@ -107,8 +104,7 @@ provider的`query()`方法。
 
 * Provider进程尚未启动：system_server 进程调用 `startProcessLocked()`创建 provider 进程且 attach 到 system_server 后, 通过 binder 方式通知 provider 进程执行 `AT.bindApplication()`方法
 
-&emsp;&emsp;执行`AT.bindApplication()`方法时，也是通过 handler 的通信方式，通过`sendMessage()`方法，主线程在
-`handMessage()`方法时，会调用`AT.handleBindApplication()`方法。
+&emsp;&emsp;执行`AT.bindApplication()`方法时，也是通过 handler 的通信方式，通过`sendMessage()`方法，主线程在`handMessage()`方法时，会调用`AT.handleBindApplication()`方法。
 ```java
     AT.handleBindApplication()
         AT.installContentProvider()
