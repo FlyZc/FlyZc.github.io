@@ -74,7 +74,7 @@ ContentResolver 类来完成对数据的增删改查操作。
 * 目标 provider 已存在
     * 权限检查
     * 当允许运行在调用者进程且该 ContentProvider 已发布，则直接返回
-    * 增加 Provider 的引用计数
+    * 增加 provider 的引用计数
     * 更新进程 LRU 队列
     * 更新进程 adj
     * 当 provider 进程被杀时，则减少引用计数并调用`appDiedLocked()`，且设置 ContentProvider 为没有发布的状态
@@ -148,7 +148,7 @@ ContentResolver 类来完成对数据的增删改查操作。
             mInstrumentation.callApplicationOnCreate(...)
 ```
 
-&emsp;&emsp;进程 A 与另一进程 B 的 provider 建立通信时：
+&emsp;&emsp;进程 A 与另一进程 B 的 provider 建立通信时：      
 
 * 对于 stable provider：若使用过程中，B crash 或者被砍掉了，则 A 立即被 ActivityManagerService 砍掉，进程 A 没有任何容错处理的机会
 * 对于 unstable provider：若使用过程中，B crash 或者被砍掉了，A 会收到 DeadObjectException，可进行容错处理
