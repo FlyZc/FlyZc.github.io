@@ -50,8 +50,8 @@ ContentResolver 类来完成对数据的增删改查操作。
                 AT.acquireProvider(...)
                     AT.acquireExistingProvider(...)
                     AMP.getContentProvider(...)
-                    AMS.getContentProvider(...)
-                        AMS.getContentProviderImpl(...)
+                        AMS.getContentProvider(...)
+                            AMS.getContentProviderImpl(...)
                     AT.installProvider(...)
 
 ```
@@ -99,8 +99,8 @@ ContentResolver 类来完成对数据的增删改查操作。
 ```java
     AT.installProvider(...)
         AMP.removeContentProvider(...)
-        AMS.removeContentProvider(...)
-            AMS.decProviderCountLocked(...)
+            AMS.removeContentProvider(...)
+                AMS.decProviderCountLocked(...)
         AT.installProviderAuthoritiesLocked(...)
         new ProviderRefCount(...)
 ```
@@ -130,7 +130,7 @@ ContentResolver 类来完成对数据的增删改查操作。
             AT.installProvider(...)
                 ContentProvider.getIContentProvider(...)
             AMP.publishContentProviders(...)
-            AMS.publishContentProviders(...)
+                AMS.publishContentProviders(...)
         mInstrumentation.callApplicationOnCreate(...)
 ```
 &emsp;&emsp;在`AT.installProvider()`方法中主要是通过反射，创建目标 ContentProvider 对象,并通过调用`ContentProvider.getIContentProvider()`得到创建的 ContentProvider 对象，并调用该对象 onCreate 方法.随后便是 publish 的过程，在 publish 的过程中，会 将该provider添加到 mProviderMap，并将该 provider 移出 mLaunchingProviders 队列。一旦 publish 成功,同时也会移除 provider 发布超时的消息,并且调用 `notifyAll()`来唤醒所有等待的 Client 端进程。 Provider进程的工作便是完成，接下来便开始执行 installProvider过程。
@@ -144,13 +144,15 @@ ContentResolver 类来完成对数据的增删改查操作。
                 AT.installProvider(...)
                     ContentProvider.getIContentProvider(...)
                 AMP.publishContentProviders(...)
-                AMS.publishContentProviders(...)
+                    AMS.publishContentProviders(...)
             mInstrumentation.callApplicationOnCreate(...)
 ```
 
+&emsp;&emsp;与 ContentProvider 相关的类中，有两个类， ContentProviderConnection 和 ProviderRefCount ，其中， ContentProviderConnection 是连接 ContentProvider 与 Client 之间的对象。而 ProviderRefCount 是 ActivityThread 的内部类，该引用保存到 Client 端。
+
 &emsp;&emsp;进程 A 与另一进程 B 的 provider 建立通信时：      
 
-* 对于 stable provider：若使用过程中，B crash 或者被砍掉了，则 A 立即被 ActivityManagerService 砍掉，进程 A 没有任何容错处理的机会
-* 对于 unstable provider：若使用过程中，B crash 或者被砍掉了，A 会收到 DeadObjectException，可进行容错处理
+* 对于 stable provider：会杀掉所有跟该 provider 建立 stable 连接的非 persistent 进程。若使用过程中，B crash 或者被砍掉了，则 A 立即被 ActivityManagerService 砍掉，进程 A 没有任何容错处理的机会
+* 对于 unstable provider：若使用过程中，B crash 或者被砍掉了，不会导致 client 进程 A 被级联所杀,只会回调 unstableProviderDied 来清理相关信息，可进行容错处理
 
 &emsp;&emsp;stable provider和unstable provider，在于引用计数的不同，stable provider 建立的是强连接, 客户端进程与 provider 进程存在依赖关系, 即 provider 进程死亡则会导致客户端进程被杀。
