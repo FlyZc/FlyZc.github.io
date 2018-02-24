@@ -148,7 +148,13 @@ ContentResolver 类来完成对数据的增删改查操作。
             mInstrumentation.callApplicationOnCreate(...)
 ```
 
-&emsp;&emsp;与 ContentProvider 相关的类中，有两个类， ContentProviderConnection 和 ProviderRefCount ，其中， ContentProviderConnection 是连接 ContentProvider 与 Client 之间的对象。而 ProviderRefCount 是 ActivityThread 的内部类，该引用保存到 Client 端。
+&emsp;&emsp;与 ContentProvider 相关的类中，有两个类， ContentProviderConnection 和 ProviderRefCount ，其中， ContentProviderConnection 是连接 ContentProvider 与 Client 之间的对象。在 ContentProviderConnection 中，
+
+* provider：用于保存目标 provider 
+* client：请求该 provider 的客户端进程
+* waiting：布尔类型变量，用于记录该连接的 client 进程是否正在等待该 provider 发布
+
+而 ProviderRefCount 是 ActivityThread 的内部类，该引用保存到 Client 端。
 
 &emsp;&emsp;进程 A 与另一进程 B 的 provider 建立通信时：      
 
