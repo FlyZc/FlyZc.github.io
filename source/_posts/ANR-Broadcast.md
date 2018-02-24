@@ -1,5 +1,5 @@
 ---
-title: Broadcast相关的ANR
+title: ANR-Broadcast
 date: 2018-02-24 10:23:33
 tags:
     - Android
@@ -34,3 +34,12 @@ categories:
 * 如果当前正在执行的 receiver 没有超时，则重新设置广播超时，不会 anr
 
 &emsp;&emsp;如果不是上面的几种情况，那么会通过`mHandler.post(new AppNotResponding(app, anrMessage))`发送 AppNotResponding 的消息，此时会进入 ANR 处理流程。
+```java
+    private final class AppNotResponding implements Runnable {
+        ...
+        public void run() {
+            // 进入ANR处理流程
+            mService.appNotResponding(mApp, null, null, false, mAnnotation);
+        }
+    }
+```
