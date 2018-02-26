@@ -1,5 +1,6 @@
 ---
 title: Binder通信
+date: 2018-02-12 11:23:13
 tags: 
     - Android
 categories: 

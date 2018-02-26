@@ -1,5 +1,6 @@
 ---
 title: Broadcast广播机制
+date: 2018-02-09 10:23:33
 tags: 
     - Android
     - 四大组件
