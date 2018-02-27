@@ -9,6 +9,7 @@ categories:
 ---
 
 ##### 介绍
+
 ContentProvider 是一个抽象类，当实现自己的 ContentProvider 类，只需继承于 ContentProvider ，并且实 现以下六个 abstract 方法即可：
 
 * insert(Uri, ContentValues)：插入新数据；
@@ -25,14 +26,16 @@ ContentProvider 的数据操作方法可以看出都依赖于 Uri ，例如`cont
 * /android/contentprovider ：作为路径，标明具体的数据位置
 
 在 ContentProvider 中，
+
 * CONTENT_PROVIDER_PUBLISH_TIMEOUT(10s)： provider 所在进程发布其 ContentProvider 的超时时长为10s，超过10s则会被系统所杀。
-* mLaunchingProviders：记录的每一项是一个ContentProviderRecord对象, 所有的存在client等待其发布完成的contentProvider列表，一旦发布完成则相应的contentProvider便会从该列表移除
+* mLaunchingProviders：记录的每一项是一个ContentProviderRecord对象, 所有的存在 client 等待其发布完成的contentProvider 列表，一旦发布完成则相应的 contentProvider 便会从该列表移除
 * mProviderMap：记录该进程的contentProvider
 
 ##### 查询 ContentProvider
 
 &emsp;&emsp;其他进程或者 app 如果想要操作 ContentProvider ，那么首先需要获取其对应的 ContentResolver ，再利用
 ContentResolver 类来完成对数据的增删改查操作。
+
 ```java
     ContentResolver cr = getContentResolver();  //获取ContentResolver
     Uri uri = Uri.parse("content://com.philo.articles/android/contentprovider");
@@ -43,6 +46,7 @@ ContentResolver 类来完成对数据的增删改查操作。
 
 &emsp;&emsp;`getContentResolver()` 方法经过层层调用来到 ContextImpl 类，得到的返回值是在 ContextImpl 对象创建过程中就创建好的 ApplicationContentResolver 类型的对象。
 &emsp;&emsp;而在 query() 方法中，首先调用`ContentResolver.acquireUnstableProvider()`方法，试图通过 uri 获取 unstableProvider 对象，`CR.acquireUnstableProvider()`方法是通过调用 `ACR.acquireUnstableProvider()`来实现的。`ACR.acquireUnstableProvider()`方法会返回一个 IContentProvider 类型的对象，而在该方法中，最终会调用到`ActivityThread.acquireProvider()`方法。
+
 ```java
     CR.query(...)
         CR.acquireUnstableProvider(...)
@@ -55,6 +59,7 @@ ContentResolver 类来完成对数据的增删改查操作。
                     AT.installProvider(...)
 
 ```
+
 &emsp;&emsp;在`AT.acquireProvider()`方法中，首先通过调用方法`AT.acquireExistingProvider()`尝试获取已存储的 provider ，当成功获取则直接返回，否则继续执行。在`AT.acquireExistingProvider()`中：
 
 * 首先从 ActivityThread 的 mProviderMap 查询是否存在相对应的 provider，若不存在则直接返回
@@ -62,10 +67,13 @@ ContentResolver 类来完成对数据的增删改查操作。
 * 当 provider 记录存在,且进程存活的情况下,则在 provider 引用计数不为空时则继续增加引用计数
 
 &emsp;&emsp;如果`AT.acquireExistingProvider()`没有成功获取到 provider 对象，那么需要通过`AMP.getContentProvider()`来获取 provider ，当无法获取 auth 所对应的 provider 则直接返回，否则继续执行。在`AMP.getContentProvider()`中，AMP经过 binder IPC 通信传递给 AMS 来完成相应工作, 因此接着执行`AMS.getContentProvider()`方法。在`AMS.getContentProvider()`方法中又会继续调用`AMS.getContentProviderImpl()`方法。`AMS.getContentProviderImpl()`方法中首先会获得调用者的进程记录 ProcessRecord ，接着从 AMS 中查询相应的 ContentProviderRecord 对象 cpr，
+
 ```java
     cpr = mProviderMap.getProviderByName(name, userId);
 ```
+
 &emsp;&emsp;在这里，
+
 * mProviderMap.putProviderByClass(comp, cpr): 以 ComponentName (组件名)为 key, ContentProviderRecord 为 value
 * mProviderMap.putProviderByName(name, cpr): 以 auth (即com.philo.articles)为 key, ContentProviderRecord 为 value
 
@@ -96,6 +104,7 @@ ContentResolver 类来完成对数据的增删改查操作。
 * 循环等待 provider 发布
 
 &emsp;&emsp;到此处，`AT.acquireProvider()`方法应该已成功获取了 Provider 对象, 接下来便是在调用端安装 Provider ，接着就要调用`AT.installProvider()`方法来安装 provider ,并增加该 provider 的引用计数。
+
 ```java
     AT.installProvider(...)
         AMP.removeContentProvider(...)
@@ -119,11 +128,13 @@ ContentResolver 类来完成对数据的增删改查操作。
 &emsp;&emsp;采用 unstable 类型的 ContentProvider 的 app 不会因为远程 ContentProvider 进程的死亡而被杀，stable 则恰恰相反。对于 app 无法事先决定创建的 ContentProvider 是 stable，还是 unstable 类型的，也便无法得知自己的进 程是否会依赖于远程 ContentProvider 的生死。
 
 ##### Provider 进程
+
 &emsp;&emsp;发布ContentProvider分两种情况：
 
 * Provider进程尚未启动：system_server 进程调用 `startProcessLocked()`创建 provider 进程且 attach 到 system_server 后, 通过 binder 方式通知 provider 进程执行 `AT.bindApplication()`方法
 
 &emsp;&emsp;执行`AT.bindApplication()`方法时，也是通过 handler 的通信方式，通过`sendMessage()`方法，主线程在`handMessage()`方法时，会调用`AT.handleBindApplication()`方法。
+
 ```java
     AT.handleBindApplication(...)
         AT.installContentProvider(...)
@@ -133,9 +144,11 @@ ContentResolver 类来完成对数据的增删改查操作。
                 AMS.publishContentProviders(...)
         mInstrumentation.callApplicationOnCreate(...)
 ```
+
 &emsp;&emsp;在`AT.installProvider()`方法中主要是通过反射，创建目标 ContentProvider 对象,并通过调用`ContentProvider.getIContentProvider()`得到创建的 ContentProvider 对象，并调用该对象 onCreate 方法.随后便是 publish 的过程，在 publish 的过程中，会 将该provider添加到 mProviderMap，并将该 provider 移出 mLaunchingProviders 队列。一旦 publish 成功,同时也会移除 provider 发布超时的消息,并且调用 `notifyAll()`来唤醒所有等待的 Client 端进程。 Provider进程的工作便是完成，接下来便开始执行 installProvider过程。
 
 * Provider 进程已启动但未发布：发现 provider 进程已存在且 attach 到 system_server，但所对应的 provider 还没 有发布, 通过binder 方式通知 provider 进程执行 `AT.scheduleInstallProvider()`方法
+
 ```java
     AT.scheduleInstallProvider(...)
         sendMessage(...)
@@ -150,15 +163,15 @@ ContentResolver 类来完成对数据的增删改查操作。
 
 &emsp;&emsp;与 ContentProvider 相关的类中，有两个类， ContentProviderConnection 和 ProviderRefCount ，其中， ContentProviderConnection 是连接 ContentProvider 与 Client 之间的对象。在 ContentProviderConnection 中，
 
-* provider：用于保存目标 provider 
+* provider：用于保存目标 provider
 * client：请求该 provider 的客户端进程
 * waiting：布尔类型变量，用于记录该连接的 client 进程是否正在等待该 provider 发布
 
 而 ProviderRefCount 是 ActivityThread 的内部类，该引用保存到 Client 端。
 
-&emsp;&emsp;进程 A 与另一进程 B 的 provider 建立通信时：      
+&emsp;&emsp;进程 A 与另一进程 B 的 provider 建立通信时：
 
 * 对于 stable provider：会杀掉所有跟该 provider 建立 stable 连接的非 persistent 进程。若使用过程中，B crash 或者被砍掉了，则 A 立即被 ActivityManagerService 砍掉，进程 A 没有任何容错处理的机会
 * 对于 unstable provider：若使用过程中，B crash 或者被砍掉了，不会导致 client 进程 A 被级联所杀,只会回调 unstableProviderDied 来清理相关信息，可进行容错处理
 
-&emsp;&emsp;stable provider和unstable provider，在于引用计数的不同，stable provider 建立的是强连接, 客户端进程与 provider 进程存在依赖关系, 即 provider 进程死亡则会导致客户端进程被杀。
+&emsp;&emsp;stable provider 和 unstable provider，在于引用计数的不同，stable provider 建立的是强连接, 客户端进程与 provider 进程存在依赖关系, 即 provider 进程死亡则会导致客户端进程被杀。
