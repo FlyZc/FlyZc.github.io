@@ -26,7 +26,7 @@ categories:
 	InputManagerService(初始化)
 		nativeInit
 			NativeInputManager
-		    	EventHub
+				EventHub
 				InputManager
 					InputDispatcher
 						Looper
@@ -38,11 +38,11 @@ categories:
 	IMS.start(启动)
 	    nativeStart
 			InputManager.start
-	            InputReaderThread->run
+				InputReaderThread->run
 				InputDispatcherThread->run
 ```
 
-&emsp;&emsp; InputManagerService 的初始化过程是通过`new InputManagerService(context)`，在 new 的过程中，首先有一个初始化 native 对象的过程，在这个过程中，首先会获取 nativie 消息队列，最后还需要创建 Native 的 InputManager 对象。通过`new NativiInputManager(...)`创建 NativeInputManager 对象时，其实是根据上层 IMS 的 context 以及上层 IMS 对象来进行一些变量的赋值，同时在构造 NativeInputManager 对象时，还需要创建 EventHub 对象和 InputManager 对象。
+&emsp;&emsp; InputManagerService 的初始化过程是通过`new InputManagerService(context)`，在 new 的过程中，首先有一个初始化 native 对象的过程，在这个过程中，首先会获取 native 消息队列，最后还需要创建 Native 的 InputManager 对象。通过`new NativeInputManager(...)`创建 NativeInputManager 对象时，其实是根据上层 IMS 的 context 以及上层 IMS 对象来进行一些变量的赋值，同时在构造 NativeInputManager 对象时，还需要创建 EventHub 对象和 InputManager 对象。
 
 &emsp;&emsp;在创建 EventHub 对象时，首先会创建 epoll 实例，并会初始化 INotify 来监听 /dev/input，并会将 INotify 添加到 epoll 实例。然后做的就是创建非阻塞模式的管道，并添加到 epoll 。
 
