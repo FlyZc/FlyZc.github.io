@@ -78,7 +78,7 @@ theme: yilia
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/FlyZc/FlyZc.github.io.git
+  repo: git@github.com:FlyZc/FlyZc.github.io.git
   branch: master
 
 jsonContent:
