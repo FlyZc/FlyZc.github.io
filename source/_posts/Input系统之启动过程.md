@@ -50,8 +50,8 @@ categories:
 
 &emsp;&emsp;在 InputDispatcher 的构造函数中，会创建属于自己线程的 Looper 对象，接着获取分发超时参数，超时参数来自 IMS ，参数默认值 keyRepeatTimeout = 500， keyRepeatDelay = 50。
 
-&emsp;&emsp;在 InputReader 的构造函数中，会创建输入监听对象`new QueuedInputListener(listener)`，这里的 listener 便是 InputDispatcher 类型。
+&emsp;&emsp;在创建 InputReader 对象的时候会传入一个已经创建好的 eventHub 对象，InputReader 的作用就是用来读取 EventHub 中的事件，从而传递给 InputDispatcher 的，在这里将 EventHub 对象传递到 InputReader 的有参构造方法中，以便 InputReader 能够取出 EventHub 中的事件。同时在 InputReader  的构造方法中，会创建输入监听对象`new QueuedInputListener(listener)`，这便是 InputReader 和 InputDispatcher 联系的纽带，通过 QueuedInputListener 内部成员变量 mInnerListener 指向 InputDispatcher 对象。这里的 listener 便是 InputDispatcher 对象。
 
-&emsp;&emsp;到此处，便是创建好了 InputManager 对象，接着就是执行 initialize 的过程，初始化的主要工作就是创建两个(InputReaderThread 和 InputDispatcherThread)能访问 Java 代码的 native 线程。InputManagerService 对象初始化过程并完成，接下来便是调用其 start 方法。
+&emsp;&emsp;创建好 InputReader 和 InputDispatcher 对象之后，接着就是执行 initialize 的过程，初始化的主要工作就是创建两个(InputReaderThread 和 InputDispatcherThread)能访问 Java 代码的 native 线程。到此处便是 InputManagerService 完成了对象的创建和初始化的过程，接下来便是调用其 start 方法。
 
-&emsp;&emsp;在`IMS.start()`方法中，首先会通过`nativeStart(mPtr)`启动 native 对象，此处 ptr 记录的是 NativeInputManager 对象，获取到 NativeInputManager 对象 im 后，通过`im->getInputManager()->start()`来启动，在`InputManager.start()`方法中，主要做的就是启动 InputReaderThread 和 InputDispatcherThread 两个线程。启动好 native 对象之后，接着使用`registerPointerSpeedSettingObserver()`注册触摸点速度的观察者，使用`registerShowTouchesSettingObserver()`注册是否显示功能的观察者，然后再注册广播，通过接受广播来更新触摸点速度以及确定是否在屏幕上显示触摸点。
+&emsp;&emsp;在`IMS.start()`方法中，首先会通过`nativeStart(mPtr)`启动 native 对象，此处 ptr 记录的是 NativeInputManager 对象，通过 ptr 获取到 NativeInputManager 对象 im 后，通过`im->getInputManager()->start()`来启动，在`InputManager.start()`方法中，主要做的就是启动 InputReaderThread 和 InputDispatcherThread 两个线程。启动好 native 对象之后，接着使用`registerPointerSpeedSettingObserver()`注册触摸点速度的观察者，使用`registerShowTouchesSettingObserver()`注册是否显示功能的观察者，然后再注册广播，通过接受广播来更新触摸点速度以及确定是否在屏幕上显示触摸点。
