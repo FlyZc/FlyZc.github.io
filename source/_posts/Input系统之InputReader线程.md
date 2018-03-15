@@ -60,7 +60,7 @@ categories:
 			mapper->process(rawEvent)
 ```
 
-&emsp;&emsp;在`processEventsForDeviceLocked(...)`方法中，需要先获得 InputDevice 对象 device ，然后通过调用`device->process(...)`来进一步处理。最终也是根据不同的 InputMapper 种类来处理不同的按键事件。比如针对键盘类设备，针对 KeyboardInputMapper 类中的`process()`方法，
+&emsp;&emsp;在`processEventsForDeviceLocked(...)`方法中，需要先获得 InputDevice 对象 device ，然后通过调用`device->process(...)`来进一步处理。最终也是根据不同的 InputMapper 种类来处理不同的按键事件。比如对于键盘类设备，针对的是 KeyboardInputMapper 类中的`process()`方法。
 
 ```cpp
 	mapper->processs(...)
@@ -70,7 +70,7 @@ categories:
 			 getListener()->notifyKey(...)
 ```
 
-&emsp;&emsp;在`process()`方法中，首先就是需要获取 keyCode ，然后再是`processKey(...)`的过程。在这个过程中，判断是键盘是按下还是抬起，并获取相应的 keyCode 事件，根据获取到的 keyCode 等信息最终需要通知 key 事件，此处 KeyboardInputMapper 的 mContext 指向 InputReader，`getListener()`获取的便是 mQueuedListener 。 接下来调用该对象的 notifyKey ，接下来要做的就是将事件发送给 InputDispatcher 线程。
+&emsp;&emsp;在`process()`方法中，首先就是需要获取 keyCode ，然后再是`processKey(...)`的过程。在这个过程中，判断是键盘是按下还是抬起，并获取相应的 keyCode 事件，根据获取到的 keyCode 等信息最终需要通知 key 事件，此处 KeyboardInputMapper 的 mContext 指向 InputReader，`getListener()`获取的便是 mQueuedListener 。 接下来调用该对象的 `notifyKey(...)`方法 ，接下来要做的就是将事件发送给 InputDispatcher 线程。
 
 ##### 发送事件
 
