@@ -70,11 +70,11 @@ categories:
 			 getListener()->notifyKey(...)
 ```
 
-&emsp;&emsp;在`process()`方法中，首先就是需要获取 keyCode ，然后再是`processKey(...)`的过程。在这个过程中，判断是键盘是按下还是抬起，并获取相应的 keyCode 事件，根据获取到的 keyCode 等信息最终需要通知 key 事件，此处 KeyboardInputMapper 的 mContext 指向 InputReader，`getListener()`获取的便是 mQueuedListener 。 接下来调用该对象的 `notifyKey(...)`方法，在`notifyKey(...)`中，会将该 key 事件压入类型为 Vector<NotifyArgs*>栈顶，接下来要做的就是将事件发送给 InputDispatcher 线程。
+&emsp;&emsp;在`process()`方法中，首先就是需要获取 keyCode ，然后再是`processKey(...)`的过程。在这个过程中，判断是键盘是按下还是抬起，并获取相应的 keyCode 事件，根据获取到的 keyCode 等信息最终需要通知 key 事件，此处 KeyboardInputMapper 的 mContext 指向 InputReader，还需要做的事情就是将这些按键事件封装到 NotifyKeyArgs 对象 args 中，`getListener()`获取的便是 mQueuedListener 。 接下来调用该对象的 `QueuedInputListener::notifyKey(...)`方法，在这个`notifyKey(...)`方法中，会将该 key 事件压入类型为 Vector<NotifyArgs*>栈顶，接下来要做的就是将事件发送给 InputDispatcher 线程。
 
 ##### 发送事件
 
-&emsp;&emsp;执行完`processEventsLocked()`后，需要通过`mQueuedListener->flush()`来实现将事件发送给 InputDispatcher 线程。
+&emsp;&emsp;`processEventsLocked()`是对事件进行加工的过程，将 RawEvent 转换成`NotifyKeyArgs(NotifyArgs)`。执行完`processEventsLocked()`后，需要通过`mQueuedListener->flush()`来实现将事件发送给 InputDispatcher 线程。
 
 ```cpp
 	flush()
@@ -96,4 +96,6 @@ categories:
 * 当事件类型为 key 事件，且发生一对按下和抬起操作,则需要唤醒
 * 当事件类型为 motion 事件，且当前可触摸的窗口属于另一个应用，则需要唤醒
 
-&emsp;&emsp; InputReader 的所做的事情就是从 EventHub 获取数据后生成 EventEntry 事件，加入到 InputDispatcher 的 mInboundQueue 队列，再唤醒 InputDispatcher 线程。
+&emsp;&emsp;那么`QueuedListener_flush()`的过程就是将事件发送到 InputDispatcher 线程，转换 NotifyKeyArgs 为 KeyEntry。
+
+&emsp;&emsp; InputReader 线程不断循环的执行`InputReader.loopOnce()`，每次从 EventHub 获取数据后生成 EventEntry ，最后再交给 InputDispatcher 线程处理。
