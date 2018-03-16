@@ -33,7 +33,7 @@ categories:
 
 ##### 处理事件
 
-&emsp;&emsp;前面便是 EventHub 已经完成了从设备节点获取事件的流程，获取事件之后就是通过调用`InputReader::processEventsLocked(...)`方法来处理事件，这就是 InputReader 从 EventHub 中获取事件的过程，在该方法中，会通过事件处理的类型来进行不同的操作，
+&emsp;&emsp;前面便是 EventHub 已经完成了从设备节点获取事件并将事件封装成 RawEvent 的过程，获取事件之后会通过调用`InputReader::processEventsLocked(...)`方法来处理事件，也会根据事件的类型来进行一些设备增删等操作，
 
 * DEVICE_ADDED: 设备增加
 
@@ -52,7 +52,7 @@ categories:
 * DEVICE_REMOVED: 设备移除
 * FINISHED_DEVICE_SCAN: 设备扫描完成
 
-&emsp;&emsp;处理好设备的增删之后，便是事件的处理过程，事件的处理是通过`processEventsForDeviceLocked(...)`方法来实现，
+&emsp;&emsp;除了设备的增删这些事件的操作，事件的处理是通过`processEventsForDeviceLocked(...)`方法来实现，
 
 ```cpp
 	processEventsForDeviceLocked(...)
@@ -60,7 +60,7 @@ categories:
 			mapper->process(rawEvent)
 ```
 
-&emsp;&emsp;在`processEventsForDeviceLocked(...)`方法中，需要先获得 InputDevice 对象 device ，然后通过调用`device->process(...)`来进一步处理。最终也是根据不同的 InputMapper 种类来处理不同的按键事件。比如对于键盘类设备，针对的是 KeyboardInputMapper 类中的`process()`方法。
+&emsp;&emsp;在`processEventsForDeviceLocked(...)`方法中，需要先获得 InputDevice 对象 device ，然后通过调用`device->process(...)`来进一步处理。最终也是根据不同的 InputMapper 种类来处理不同的按键事件。比如对于键盘类设备，调用的是 KeyboardInputMapper 类中的`process()`方法。
 
 ```cpp
 	mapper->processs(...)
@@ -70,11 +70,11 @@ categories:
 			 getListener()->notifyKey(...)
 ```
 
-&emsp;&emsp;在`process()`方法中，首先就是需要获取 keyCode ，然后再是`processKey(...)`的过程。在这个过程中，判断是键盘是按下还是抬起，并获取相应的 keyCode 事件，根据获取到的 keyCode 等信息最终需要通知 key 事件，此处 KeyboardInputMapper 的 mContext 指向 InputReader，`getListener()`获取的便是 mQueuedListener 。 接下来调用该对象的 `notifyKey(...)`方法 ，接下来要做的就是将事件发送给 InputDispatcher 线程。
+&emsp;&emsp;在`process()`方法中，首先就是需要获取 keyCode ，然后再是`processKey(...)`的过程。在这个过程中，判断是键盘是按下还是抬起，并获取相应的 keyCode 事件，根据获取到的 keyCode 等信息最终需要通知 key 事件，此处 KeyboardInputMapper 的 mContext 指向 InputReader，`getListener()`获取的便是 mQueuedListener 。 接下来调用该对象的 `notifyKey(...)`方法，在`notifyKey(...)`中，会将该 key 事件压入类型为 Vector<NotifyArgs*>栈顶，接下来要做的就是将事件发送给 InputDispatcher 线程。
 
 ##### 发送事件
 
-&emsp;&emsp;到此处再就是发送事件到 InputDispatcher，这是通过`mQueuedListener->flush()`来实现的。
+&emsp;&emsp;执行完`processEventsLocked()`后，需要通过`mQueuedListener->flush()`来实现将事件发送给 InputDispatcher 线程。
 
 ```cpp
 	flush()
