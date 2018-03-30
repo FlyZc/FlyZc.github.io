@@ -57,6 +57,8 @@ categories:
 	mInputMonitor.updateInputWindowsLw(false /*force*/)
 ```
 
-&emsp;&emsp;这里创建的 inputChannels 数组中，inputChannels[0] 对应的是服务端，而 inputChannels[1] 对应的是客户端，在这里将服务端保存在 WindowState 的 mInputChannel 中，客户端传送给 outInputChannel 对象，而这个 outInputChannel 正是作为参数传递过来的 App 进程中 ViewRootImpl 的 mInputChannel。
+&emsp;&emsp;在创建 InputChannels 数组的过程中，首先是创建两个 socket 对象，创建两个 InputChannel 对象，socket 对象会分别和两个 InputChannel 对象绑定，创建两个 NativeInputChannel 对象之后，nativeInputChannel 对象会跟 InputChannel 对象绑定在一起，即将 nativeInputChannel 保存到 java 层的 InputChannel 的成员变量 mPtr 。最后需要做的事情就是将 client 和 server 插入到 channelPair 中，得到的 channelPair 会返回给 inputChannels 数组。
 
-&emsp;&emsp;
+&emsp;&emsp;得到 inputChannels 数组之后，inputChannels[0] 对应的是服务端，而 inputChannels[1] 对应的是客户端，在这里将服务端
+保存在 WindowState 的 mInputChannel 中，客户端传送给 outInputChannel 对象，而这个 outInputChannel 正是作为参数传递过来的 App 进程中 ViewRootImpl 的 mInputChannel。
+	
