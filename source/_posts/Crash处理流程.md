@@ -97,4 +97,20 @@ categories:
 			AS.finishActivityLocked(...)
 ```
 
-&emsp;&emsp;在这个方法中，最终会回调到 activity 的 pause 方法。最后处理完`makeAppCrashingLocked(...)`方法，则会再发送消息 SHOW_ERROR_MSG ，弹出提示 crash 的对话框。
+&emsp;&emsp;在这个方法中，最终会回调到 activity 的 pause 方法。最后处理完`makeAppCrashingLocked(...)`方法，则会再发送消息 SHOW_ERROR_MSG ，弹出提示 crash 的对话框。处理 SHOW_ERROR_MSG 的消息则是 UiHandler 通过 handleMessage 来完成的。系统会弹出提示 crash 的对话框，并阻塞等待用户选择是“退出”或 “退出并报告”，当用户不做任何选择时 5min 超时后，默认选择“退出”，当手机休眠时也默认选择“退出”。到这里，最后在 uncaughtException 中在finnally语句块还有一个杀进程的动作，通过 finnally 语句块中执行`Process.killProcess(...)`来保证彻底杀掉 crash 进程。
+
+&emsp;&emsp;最后还有一个 Binder 的死亡回调过程，在应用进程创建的过程中有一个`attachApplicationLocked()`方法的过程中便会创建死亡通知。当 binder 服务端挂了之后，便会通过 binder 的 DeathRecipient 来通知 AMS 进行相应的清理收尾工作。前面讲到 crash 的进程会被 kill 掉，那么当该进程被杀，则会回调到`binderDied()`方法。
+
+```java
+	AMS.binderDied()
+		AMS.appDiedLocked()
+			AMS.handleAppDiedLocked(...)
+				AMS.cleanUpApplicationRecordLocked(...) 	//清理应用程序service, BroadcastReceiver, ContentProvider相关信息
+				app.activities.clear() 	//清理 activity 相关信息
+```
+
+&emsp;&emsp;清理 ContentProvider 的过程，首先获取该进程已发表的 ContentProvider ，将 DyingProvider 清理掉，这包括 ContentProvider 的服务端和客户端都会被杀。还需要处理的就是正在启动并且有客户端正在等待的 ContentProvider 。最后就是取消已连接的 ContentProvider 的注册。清理 BroadcaseReceiver 主要就是取消注册的广播接收者。
+
+&emsp;&emsp;当 crash 进程执行 kill 操作后，进程被杀。由于 crash 进程中拥有一个 Binder 服务端 ApplicationThread ，而应用进程在创建过程调用`attachApplicationLocked()`，从而 attach 到 system_server 进程，在 system_server 进程内有一个 ApplicationThreadProxy ，这是相对应的 Binder 客户端。当 Binder 服务端 ApplicationThread 所在进程(即 crash 进程)挂掉后，则 Binder 客户端能收到相应的死亡通知，从而进入 binderDied 流程。
+
+
