@@ -19,7 +19,15 @@ categories:
 
 &emsp;&emsp;获取到进程名之后，会进入到方法`handleApplicationCrashInner(...)`方法的执行过程当中。在这个方法中，会将 Crash 信息写入到 EventLog 中，将错误信息添加到 DropBox 中，将错误信息添加到 DropBox 其实是将 crash 信息输出到目录 /data/system/dropbox 。例如 system_server 的 dropbox 文件名为 system_server_crash@xxx.txt (xxx代表的是时间戳)。接下来就需要执行`crashApplication(...)`方法。
 
-&emsp;&emsp; AMS 中的`crashApplication(...)`方法中调用了`makeAppCrashingLocked(...)`来继续处理 crash 流程，还需要做的事情就是发送消息 SHOW_ERROR_MSG ，弹出提示 crash 的对话框，等待用户选择。进入到`makeAppCrashingLocked(...)`方法的执行过程中，需要做的事情就是先把 crash 信息封装到 crashingReport 对象中。
+&emsp;&emsp; `crashApplication(...)`是 AppErrors 类中的方法，
+
+```java
+	AppErrors.crashApplication(...)
+		AppErrors.crashApplicationInner(...)
+			AppErrors.makeAppCrashingLocked(...)
+```
+
+&emsp;&emsp;调用了`makeAppCrashingLocked(...)`来继续处理 crash 流程，还需要做的事情就是发送消息 SHOW_ERROR_MSG ，弹出提示 crash 的对话框，等待用户选择。进入到`makeAppCrashingLocked(...)`方法的执行过程中，需要做的事情就是先把 crash 信息封装到 crashingReport 对象中。
 
 ```java
 	makeAppCrashingLocked(...)
