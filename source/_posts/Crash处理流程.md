@@ -7,9 +7,9 @@ categories:
 	- 笔记
 ---
 
-&emsp;&emsp;大家经常使用`try...catch`语句来捕获异常，对于没有有效的`catch exception`，就会导致应用 crash ，当出现 exception 没有 catch 的情况，系统便会来进行捕获，并进入 crash 流程。在进程创建之初会设置未捕获异常的处理器，当系统抛出未捕获的异常时，最终都交给异常处理器。进程创建过程中，会调用`RuntimeInit.java`的`commonInit()`方法设置 UncaughtHandler , 用于处理未捕获异常。
+&emsp;&emsp;我们通常使用`try...catch`语句来捕获异常，对于没有有效的`catch exception`，就会导致应用 crash ，当出现 exception 没有 catch 的情况，系统便会来进行捕获，并进入 crash 流程。在进程创建之初会设置未捕获异常的处理器，当系统抛出未捕获的异常时，最终都交给异常处理器。进程创建过程中，会调用`RuntimeInit.java`的`commonInit()`方法设置 KillApplicationHandler , 用于处理未捕获异常。
 
-&emsp;&emsp;在`RuntimeInit`类中的`commonInit()`方法中，通过`Thread.setDefaultUncaughtExceptionHandler(new UncaughtHandler())`将异常处理器 handler 对象赋给 Thread 成员变量,即`Thread.defaultUncaughtHandler = new UncaughtHandler()`，在 UncaughtHandler 类中，他复写了`uncaughtException(...)`方法，在`uncaughtException(...)`方法中，会根据进程类型，分别打印对应的 FATAL EXCEPTION 信息，接着会启动 crash 对话框`ActivityManagerNative.getDefault().handleApplicationCrash(mApplicationObject, new ApplicationErrorReport.CrashInfo(e))`，等待处理完成。`ActivityManagerNative.getDefault()`返回的是`ActivityManagerProxy`， AMP 经过 binder 调用最终交给 ActivityManagerService 中相应的方法去处理，故接下来调用的是`AMS.handleApplicationCrash()`。在 CrashInfo 对象中，会封装好 crash 信息文件名，类名，方法名，对应行号以及异常信息，同时会输出栈 trace 。
+&emsp;&emsp;在`RuntimeInit`类中的`commonInit()`方法中，通过`Thread.setDefaultUncaughtExceptionHandler(new KillApplicationHandler())`将异常处理器 handler 对象赋给 Thread 成员变量,在 KillApplicationHandler 类中，复写了`uncaughtException(...)`方法，在`uncaughtException(...)`方法中，会根据进程类型，分别打印对应的 FATAL EXCEPTION 信息，接着会启动 crash 对话框`ActivityManager.getService.handleApplicationCrash(mApplicationObject, new ApplicationErrorReport.ParcelableCrashInfo(e))`，等待处理完成。AMP 经过 binder 调用最终交给 ActivityManagerService 中相应的方法去处理，故接下来调用的是`AMS.handleApplicationCrash()`。在 CrashInfo 对象中，会封装好 crash 信息文件名，类名，方法名，对应行号以及异常信息，同时会输出栈 trace 。
 
 &emsp;&emsp;在 AMS 的`handleApplicationCrash(...)`中，首先需要获取进程 record 对象，根据获取到的对象来获取进程名，此时有几种情况：
 
