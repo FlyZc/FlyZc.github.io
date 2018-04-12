@@ -1,5 +1,5 @@
 ---
-title: Input系统之InputDisptcher线程.md
+title: Input系统之InputDisptcher线程
 date: 2018-03-30 13:17:43
 tags:
 	- Android
