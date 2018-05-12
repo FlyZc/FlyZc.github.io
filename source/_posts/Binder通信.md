@@ -22,6 +22,6 @@ Binder IPC原理
 
 &emsp;&emsp;Client,Server,Service Manager之间不是直接交互的，都通过与 Binder Driver 进行交互的，从而实现 IPC 通信方式。其中 Binder 驱动位于内核空间，Client,Server,Service Manager位于用户空间。Binder 驱动和 Service Manager 可以看做是 Android 平台的基础架构，而 Client 和 Server 是 Android 的应用层。
 
-&emsp;&emsp;不管是注册服务、请求服务还是使用服务，每次都会经历一个完整的 Binder IPC 过程。
+&emsp;&emsp;不管是注册服务、请求服务还是使用服务，每次都会经历一个完整的 Binder IPC 的过程。
 
 
