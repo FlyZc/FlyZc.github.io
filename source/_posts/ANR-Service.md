@@ -42,6 +42,6 @@ Service Timeout有两类:
             AMS.appNotResponding(...)
 ```
 
-&emsp;&emsp;Service运行在主线程里面，在Service里编写了非常耗时的代码会出现ANR。可以在Service中再创建一个子线程，然后在这里去处理耗时逻辑，或者使用远程Service的方式。但是在使用远程Service的方式的时候，Service和Activity不在同一个进程，这个时候，不能通过传统的方式来建立关联，需要使用AIDL来进行跨进程通信。远程服务是独立的进程，进程名格式为所在包名你指定的android:process字符串。
+&emsp;&emsp;Service运行在主线程里面，在Service里编写了非常耗时的代码会出现ANR。可以在Service中再创建一个子线程，然后在这里去处理耗时逻辑，或者使用远程Service的方式。但是在使用远程Service的方式的时候，Service和Activity不在同一个进程，这个时候，不能通过传统的方式来建立关联，需要使用 AIDL 来进行跨进程通信。远程服务是独立的进程，进程名格式为所在包名你指定的`android:process`字符串。
 
 
