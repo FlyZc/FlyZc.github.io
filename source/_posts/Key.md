@@ -1,14 +1,14 @@
 ---
-title: Key
+title: 常用快捷键记录
 date: 2018-06-14 16:44:22
 tags:
     - 快捷键
 categories:
-    - 工具
+    - 笔记
 ---
 
-#### 常用的快捷键: 
-##### IDEA        
+##### IDEA   
+    
 * 输入iter 就会自动补全foreach()
 * 输入itar 就会自动补全for()
 * ctrl + alt + m 选中要封装的代码,就会自动将该段代码封装成一个方法
@@ -27,10 +27,12 @@ categories:
 * ctrl + alt + v 将变量提升为局部变量
 
 ##### Sublime Text
+
 * alt 显示顶端导航栏
 * ctrl + k + b 显示/隐藏左侧目录导航栏
 
 ##### Visual Studio Code
+
 * ctrl + b 显示/隐藏左侧目录导航栏
 
 ##### Vim
@@ -42,4 +44,15 @@ categories:
 * :x    退出，如果不文件更改则保存
 
 ##### Android Studio
+
 * Ctrl + O 重写方法
+
+##### Git
+
+* git status&emsp;&emsp;查看项目状态，会提示目前项目中修改过的信息
+* git diff&emsp;&emsp;查看项目中文件更改的内容
+* git checkout + 文件路径&emsp;&emsp;撤销项目中文件修改的内容（针对该文件还未执行 git add 命令被添加过）
+* git reset HEAD + 文件路径&emsp;&emsp;取消添加文件，取消添加文件之后，可以通过 checkout 命令撤销修改
+* git log&emsp;&emsp;查看提交记录
+* git log + 提交记录id + -1&emsp;&emsp;查看特定一行的提交记录
+* git log + 提交记录id + -1 -p&emsp;&emsp;查看特定的提交记录对应的所修改的内容 
