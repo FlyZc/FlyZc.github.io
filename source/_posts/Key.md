@@ -57,3 +57,11 @@ categories:
 * `git log`&emsp;&emsp;查看提交记录
 * `git log 提交记录id -1`&emsp;&emsp;查看特定一行的提交记录
 * `git log 提交记录id -1 -p`&emsp;&emsp;查看特定的提交记录对应的所修改的内容 
+
+##### 网络
+
+* 查看连接的 wifi 密码
+    * `cd/`
+    * `netsh`
+    * `wlan show profile`
+    * `wlan show profile` + 目标 wifi 名称 + `key=clear`
