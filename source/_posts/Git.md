@@ -1,4 +1,13 @@
-###创建仓库
+---
+title: Git使用总结
+date: 2018-03-11 18:23:39
+tags:
+	- Git
+categories:
+	- 笔记
+---
+
+### 创建仓库
 * 进入一个目录    
     `cd dir`
     
@@ -11,7 +20,7 @@
 * 初始化目录，使其成为一个空的仓库  
     `git init`
 
-###往仓库添加内容
+### 往仓库添加内容
 * 使用`add`命令往仓库添加内容    
     `git add "file_name"`
 
@@ -27,7 +36,7 @@
 
 * 可以使用`git status`来查看当前的仓库状态，包括是否发生更改，但是还未提交。当我们知道有内容更改后可以继续用`git diff`命令来查看修改的东西
 
-###版本回退
+### 版本回退
 * 使用命令`git reset --hard HEAD^`来回到上一个版本
     * `HEAD^`表示上一个版本
     * `HEAD^^`表示回退两个版本，以此类推
@@ -39,7 +48,7 @@
 
 * 已经 add 到暂存区了，使用`git reset HEAD "file_name"`来撤销暂存区的修改（它是将版本库中的文件恢复到暂存区中），然后再用`git checkout -- "file_name"`来撤销工作区的修改（它是将暂存区中的文件恢复到工作区中）
 
-###创建分支
+### 创建分支
 * 创建分支可以用 `git checkout -b dev`，相当于两个语句：    
     * `git branch dev`: 创建分支  
     * `git checkout dev`: 切换到分支 
@@ -62,7 +71,7 @@
     * `git stash apply`: 恢复工作现场后，stash 内容不删除，要使用`git stash drop`来删除
     * `git stash pop`恢复工作现场后，stash 内容直接删除了
 
-###远程仓库
+### 远程仓库
 * 进入你想要和远程仓库关联的本地仓库目录下，使用`git remote add origin "远程仓库地址"`，添加后 origin 就是远程仓库的地址
 
 * 使用`git push -u origin master`，将当前分支 master 推送到远程仓库上，由于远程库是空的，我们第一次推送 master 分支时，加上了 -u 参数，git 不但会把本地的 master 分支内容推送的远程新的 master 分支，还会把本地的 master 分支和远程的 master 分支关联起来，在以后的推送或者拉取时就可以简化命令。以后可以直接使用命令`git push origin master`
