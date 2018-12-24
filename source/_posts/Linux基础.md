@@ -20,3 +20,11 @@ categories:
 * ls -a：显示隐藏文件
 * ls -l：显示文件的详细信息
 * mount /dev/cdrom /mnt：将/dev/cdrom 磁盘空间挂载到 /mnt 目录
+* cd：回到 home 目录
+* cd /：回到 根目录
+* pwd：显示当前工作目录
+* rm -r -f a：删除文件夹 a 
+* cp -r a b：拷贝文件夹 a 到 b
+* mv 123 123.bak：重命名
+
+
