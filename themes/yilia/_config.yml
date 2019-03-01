@@ -3,7 +3,7 @@
 menu:
   主页: /
   笔记: /categories/笔记
-  LeetCode: /categories/LeetCode
+  算法LrrTee: /categories/LeetCode
 
 # SubNav
 subnav:
@@ -42,7 +42,7 @@ mathjax: false
 # 是否在新窗口打开链接
 open_in_new: false
 
-titlecase: false # Transform title into titlecase
+titlecase: true # Transform title into titlecase
 
 # 打赏
 # 打赏type设定：0-关闭打赏； 1-文章对应的md文件里有reward:true属性，才有打赏； 2-所有文章均有打赏
