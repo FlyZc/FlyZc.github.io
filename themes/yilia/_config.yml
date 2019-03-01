@@ -3,7 +3,7 @@
 menu:
   主页: /
   笔记: /categories/笔记
-  算法: /categories/LeetCode
+  算法: /categories/Algorithm
 
 # SubNav
 subnav:
