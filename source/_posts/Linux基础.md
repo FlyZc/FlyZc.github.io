@@ -2,7 +2,7 @@
 title: Linux基础
 date: 2018-12-24 14:27:32
 tags:
-    - 大数据
+    - Linux
 categories:
     - 笔记
 ---
