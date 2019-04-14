@@ -68,7 +68,7 @@ categories:
 
 &emsp;&emsp;到此处`stopFreezingAllLocked()`方法执行结束，接下来就是需要执行`handleAppCrashLocked(...)`方法，在该方法中，主要的执行逻辑如下:
 
-* 当同一进程在时间间隔小于1分钟时连续两次crash，则执行的情况下：
+* 当同一进程在时间间隔小于1分钟时连续两次 crash，则执行的情况如下：
 	* 对于非persistent进程：
 		* mStackSupervisor.handleAppCrashLocked(app)
 		* removeProcessLocked(app, false, false, “crash”)
