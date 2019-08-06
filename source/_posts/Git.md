@@ -39,8 +39,8 @@ categories:
             * `git commit --amend -m "message"`修改信息
             * `git push --force-with-lease origin master`推送到远程
         * 已经 push ，而且已经有其他人下载或改动
-            * git fetch origin
-            * git reset --hard origin/master
+            * `git fetch origin`
+            * `git reset --hard origin/master`
 * 可以使用`git status`来查看当前的仓库状态，包括是否发生更改，但是还未提交。当我们知道有内容更改后可以继续用`git diff`命令来查看修改的东西
 
 ### 版本回退
