@@ -18,9 +18,7 @@ categories:
 * `Ctrl + /`&emsp;&emsp;注释选中的代码块
 * `Alt + Insert`&emsp;&emsp;如果光标在项目的文件夹上，可以在当前文件夹中添加类,包等
 * `Alt + Insert`&emsp;&emsp; 如果光标在类中（也就是是在项目的代码部分）,可以将构造函数,get,set等方法添加到该类中
-* `PSVM`&emsp;&emsp;表示public static void main()
 * `Shift + F6`&emsp;&emsp;统一修改命名
-* `SOUT`&emsp;&emsp;表示System.out.println()
 * `Shift + Tab`&emsp;&emsp;选中的代码块向前缩进
 * `Ctrl + Q`&emsp;&emsp;查看方法的使用说明
 * `长按Ctrl`&emsp;&emsp;鼠标放到方法上可以简要查看方法的使用方法
