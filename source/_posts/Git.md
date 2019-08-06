@@ -33,7 +33,14 @@ categories:
         * `shift + :`表示进入命令行，可以输入指令  
         * `wq`表示强制性写入文件并退出，即使文件没有被修改也强制写入，并更新文件的修改时间
         * `x`表示写入文件并退出，仅当文件被修改时才写入，并更新文件修改时间，否则不会更新文件修改时间 
-
+    * 当 commit 的时候发现 message 信息写错时
+        * 还未 push 的情况下，通过`git commit --amend -m "message"来修改注释信息
+        * 已经 push ，但是远程没有其他人下载或者改动
+            * `git commit --amend -m "message"`修改信息
+            * `git push --force-with-lease origin master`推送到远程
+        * 已经 push ，而且已经有其他人下载或改动
+            * git fetch origin
+            * git reset --hard origin/master
 * 可以使用`git status`来查看当前的仓库状态，包括是否发生更改，但是还未提交。当我们知道有内容更改后可以继续用`git diff`命令来查看修改的东西
 
 ### 版本回退
