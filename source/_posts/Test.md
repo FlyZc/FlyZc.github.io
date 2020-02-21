@@ -7,16 +7,35 @@ categories:
     - 算法
 ---
 
-#### Hello Package
+##### Description
 
-首先通过一个简单的 package 的定义来学习 package 的使用：
+Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 
-```java
-package testPackage;
-public class Test {
-    public static void main(String args[]) {
-        mNode node = new mNode();
-        node.print("hello");
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+Example:
+
+Given nums = [2, 7, 11, 15], target = 9,
+Because nums[0] + nums[1] = 2 + 7 = 9,
+return [0, 1].
+
+##### Code
+
+```Java
+    class Solution {
+        public int[] twoSum(int[] nums, int target) {
+            int[] index = {-1, -1};
+            HashMap<Integer, Integer> map = new HashMap<>(nums.length);
+            for (int i = 0; i < nums.length; i++) {
+                int other = target - nums[i];
+                if (map.containsKey(other) && map.get(other) != i) {
+                    index[0] = i < map.get(other) ? i : map.get(other);
+                    index[1] = i > map.get(other) ? i : map.get(other);
+                    return  index;
+                }
+                map.put(nums[i], i);
+            }
+            return index;
+        }
     }
-}
 ```
