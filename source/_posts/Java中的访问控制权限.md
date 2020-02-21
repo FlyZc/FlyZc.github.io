@@ -24,9 +24,9 @@ categories:
 
 包名一般为小写，而类名的第一个字母一般为大写，这样在引用时，可以明显的分辨出包名和类名。如果在类的定义之前没有使用package定义包名，那么该类就属于缺省的包。
 
-#### Hello Package
+#### Hello Package
 
-首先通过一个简单的package的定义来学习package的使用：
+首先通过一个简单的 package 的定义来学习 package 的使用：
 
 ```java
 package testPackage;
