@@ -38,11 +38,11 @@ public class Test {
 }
 ```
 
-说明：
-- 使用 package 关键字指明类所在的包
-- package 语句必须在文件的最前面
-- 编译时可使用`javac –d . Test.java`自动产生包需要目录
-- 可以使用`java testPackage.Test`来执行编译后的代码
+注意：
+* 使用 package 关键字指明类所在的包
+* package 语句必须在文件的最前面
+* 编译时可使用`javac –d . Test.java`自动产生包需要目录
+* 可以使用`java testPackage.Test`来执行编译后的代码
 
 #### 2.2 包的几个作用
 
