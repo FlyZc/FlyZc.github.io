@@ -9,7 +9,7 @@ categories:
 
 ### ICMP协议介绍
 
-在日常工作中，我们通常会用到 ping 命令来检测网络链路是否畅通，下面将探讨ping的实现机制。Ping是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？
+在日常工作中，我们通常会用到 ping、tracert(traceroute)命令来检测网络链路状况和跟踪路由。Ping 和 tracert(traceroute)是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？
 
 ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的作用就是确认IP包是否成功送达目标地址，如果某个 IP 包未能达到目标地址，则会通过ICMP包告知IP数据包传输失败的原因。ICMP 报文封装到 IP 数据包里进行传输，不经过传输层，但我们通常认为 ICMP 协议是 IP 层的附属协议，属于网络层的协议。ICMP 的报文格式如下：
 
@@ -49,8 +49,10 @@ ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的�
 > <font color=#0000FF> 原点抑制:4</font>
 当链路发送拥塞时，通过向发送端主机发送<font color=#0000FF>原点抑制</font>消息告知主机链路发生了拥堵的情况，从而增大数据包发送的时间间隔，达到减少网络拥堵的目的。
 
+
 > <font color=#0000FF> 重定向消息:5</font>
 如果路由器发现发送端主机使用了「不是最优」的路径发送数据，那么它会返回一个 ICMP <font color=#0000FF>重定向消息</font>告知主机更合适的路由信息。
+
 
 > <font color=#0000FF> 超时消息:11</font>
 从IP数据包首部格式中我们可以看到有个`TTL(Time to Live)`的字段，每经过一次路由器，它的值就会减1，直到减到0时，该数据包就会被丢弃，此时路由器就会发送一个ICMP <font color=#0000FF>超时消息</font>通知发送端主机该数据包已被丢弃。
@@ -74,7 +76,7 @@ IP数据包构建完成后，再交给数据链路层处理，加上 MAC 首部�
 
 ### Ping 命令案例分析
 
-#### localhost、127.0.0.1以及本机IP的区别
+#### Localhost、127.0.0.1和本机ip的区别
 我们通过 Ping 程序来检测本机到目标主机的网络状况，在构建 IP 包的过程中，我们需要将本机 IP 地址设置为源IP，在现实场景中，我们经常也会看到 localhost, 127.0.0.1，这与本机 IP 又有何联系，如果我们分别 ping localhost 和 127.0.0.1又会是什么样呢？继续往下分析。
 
 首先我们来 ping localhost:
