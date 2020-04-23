@@ -8,13 +8,13 @@
   <link rel="dns-prefetch" href="FlyZc.github.io">
   <title>ICMP 协议解析 | Welcome to Philo&#39;s World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="ICMP协议介绍在日常工作中，我们通常会用到 ping 命令来检测网络链路是否畅通，下面将探讨ping的实现机制。Ping是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？ ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的作用就是确认IP包是否成功送达目标地址，如果某个 IP 包未能达到目标地址，则会通过ICMP包告知IP数">
+  <meta name="description" content="ICMP协议介绍在日常工作中，我们通常会用到 ping、tracert(traceroute)命令来检测网络链路状况和跟踪路由。Ping 和 tracert(traceroute)是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？ ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的作用就是确认IP包是否成功送达目标地址，如果某">
 <meta name="keywords" content="计算机网络">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ICMP 协议解析">
 <meta property="og:url" content="FlyZc.github.io/2020/04/18/NetworkKnowleges1/index.html">
 <meta property="og:site_name" content="Welcome to Philo&#39;s World">
-<meta property="og:description" content="ICMP协议介绍在日常工作中，我们通常会用到 ping 命令来检测网络链路是否畅通，下面将探讨ping的实现机制。Ping是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？ ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的作用就是确认IP包是否成功送达目标地址，如果某个 IP 包未能达到目标地址，则会通过ICMP包告知IP数">
+<meta property="og:description" content="ICMP协议介绍在日常工作中，我们通常会用到 ping、tracert(traceroute)命令来检测网络链路状况和跟踪路由。Ping 和 tracert(traceroute)是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？ ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的作用就是确认IP包是否成功送达目标地址，如果某">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="/2020/04/18/NetworkKnowleges1/ICMP.png">
 <meta property="og:image" content="/2020/04/18/NetworkKnowleges1/localhost.png">
@@ -25,10 +25,10 @@
 <meta property="og:image" content="/2020/04/18/NetworkKnowleges1/traceroute_ttl2.png">
 <meta property="og:image" content="/2020/04/18/NetworkKnowleges1/traceroute_process.png">
 <meta property="og:image" content="/2020/04/18/NetworkKnowleges1/tracert.png">
-<meta property="og:updated_time" content="2020-04-23T00:19:53.470Z">
+<meta property="og:updated_time" content="2020-04-23T00:29:07.122Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ICMP 协议解析">
-<meta name="twitter:description" content="ICMP协议介绍在日常工作中，我们通常会用到 ping 命令来检测网络链路是否畅通，下面将探讨ping的实现机制。Ping是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？ ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的作用就是确认IP包是否成功送达目标地址，如果某个 IP 包未能达到目标地址，则会通过ICMP包告知IP数">
+<meta name="twitter:description" content="ICMP协议介绍在日常工作中，我们通常会用到 ping、tracert(traceroute)命令来检测网络链路状况和跟踪路由。Ping 和 tracert(traceroute)是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？ ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的作用就是确认IP包是否成功送达目标地址，如果某">
 <meta name="twitter:image" content="/2020/04/18/NetworkKnowleges1/ICMP.png">
   
     <link rel="alternative" href="/atom.xml" title="Welcome to Philo&#39;s World" type="application/atom+xml">
@@ -181,7 +181,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-          <h3 id="ICMP协议介绍"><a href="#ICMP协议介绍" class="headerlink" title="ICMP协议介绍"></a>ICMP协议介绍</h3><p>在日常工作中，我们通常会用到 ping 命令来检测网络链路是否畅通，下面将探讨ping的实现机制。Ping是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？</p>
+          <h3 id="ICMP协议介绍"><a href="#ICMP协议介绍" class="headerlink" title="ICMP协议介绍"></a>ICMP协议介绍</h3><p>在日常工作中，我们通常会用到 ping、tracert(traceroute)命令来检测网络链路状况和跟踪路由。Ping 和 tracert(traceroute)是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？</p>
 <p>ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的作用就是确认IP包是否成功送达目标地址，如果某个 IP 包未能达到目标地址，则会通过ICMP包告知IP数据包传输失败的原因。ICMP 报文封装到 IP 数据包里进行传输，不经过传输层，但我们通常认为 ICMP 协议是 IP 层的附属协议，属于网络层的协议。ICMP 的报文格式如下：</p>
 <div align="center"><img src="/2020/04/18/NetworkKnowleges1/ICMP.png"> </div>
 
@@ -240,7 +240,7 @@
 <p>当主机B收到这个数据帧之后，会首先检查它的目标MAC地址是不是本机，如果是就接收下来处理，将数据帧中的 IP 数据包取出来，交给本机的IP层协议，然后IP层协议检查完之后，再将 ICMP 数据包取出来交给 ICMP 协议处理，当这一步处理完成之后，就会构建一个<font color="#0000FF"> ICMP 回送响应数据包</font>，ICMP 首部的<font color="#0000FF">类型</font>字段会设置为 0，<font color="#0000FF">序号</font>字段设置为接收到的请求数据包中的序号，然后回送给主机A。</p>
 <p>在一定的时间内，如果主机A收到了应答包，则说明它与主机B之间网络可达，如果没有收到，则说明网络不可达。源主机根据接收到的应答数据包的时间和发送请求数据包的时间计算出ICMP 数据包的时间延迟。</p>
 <p>如果两台主机不在同一个网段，那么还会涉及到网关、路由器的转发，但是 ICMP 消息的构造依旧是不变的，路由器将数据包转发另一个网段时需要修改 MAC 帧首部源 MAC 地址字段的值。可以看出，在整个 ping 程序的执行过程中使用了 ICMP 里面的 ECHO REQUEST（回送请求：8 ） 和 ECHO REPLY （回送应答：0）两种报文类型。</p>
-<h3 id="Ping-命令案例分析"><a href="#Ping-命令案例分析" class="headerlink" title="Ping 命令案例分析"></a>Ping 命令案例分析</h3><h4 id="localhost、127-0-0-1以及本机IP的区别"><a href="#localhost、127-0-0-1以及本机IP的区别" class="headerlink" title="localhost、127.0.0.1以及本机IP的区别"></a>localhost、127.0.0.1以及本机IP的区别</h4><p>我们通过 Ping 程序来检测本机到目标主机的网络状况，在构建 IP 包的过程中，我们需要将本机 IP 地址设置为源IP，在现实场景中，我们经常也会看到 localhost, 127.0.0.1，这与本机 IP 又有何联系，如果我们分别 ping localhost 和 127.0.0.1又会是什么样呢？继续往下分析。</p>
+<h3 id="Ping-命令案例分析"><a href="#Ping-命令案例分析" class="headerlink" title="Ping 命令案例分析"></a>Ping 命令案例分析</h3><h4 id="Localhost、127-0-0-1和本机ip的区别"><a href="#Localhost、127-0-0-1和本机ip的区别" class="headerlink" title="Localhost、127.0.0.1和本机ip的区别"></a>Localhost、127.0.0.1和本机ip的区别</h4><p>我们通过 Ping 程序来检测本机到目标主机的网络状况，在构建 IP 包的过程中，我们需要将本机 IP 地址设置为源IP，在现实场景中，我们经常也会看到 localhost, 127.0.0.1，这与本机 IP 又有何联系，如果我们分别 ping localhost 和 127.0.0.1又会是什么样呢？继续往下分析。</p>
 <p>首先我们来 ping localhost:</p>
 <div align="center"><img src="/2020/04/18/NetworkKnowleges1/localhost.png"> </div>
 
@@ -540,15 +540,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
               </li>
             
             <div class="clearfix"></div>
