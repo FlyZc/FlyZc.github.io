@@ -146,6 +146,178 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-617-Merge-Two-Binary-Trees" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/26/617-Merge-Two-Binary-Trees/">617-Merge Two Binary Trees</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/26/617-Merge-Two-Binary-Trees/" class="archive-article-date">
+  	<time datetime="2020-04-26T12:00:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-26</time>
+</a>
+        
+      </header>
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          <h4 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h4><p>Given two binary trees and imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not.</p>
+<p>You need to merge them into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of new tree.</p>
+<p>Example 1:</p>
+<div align="center"><img src="/2020/04/26/617-Merge-Two-Binary-Trees/61701.png"> </div>
+
+<p><strong>Note:</strong> The merging process must start from the root nodes of both trees.</p>
+<h4 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h4><p>```java<br>/**</p>
+<ul>
+<li>Definition for a binary tree node.</li>
+<li>public class TreeNode {</li>
+<li>int val;</li>
+<li>TreeNode left;</li>
+<li>TreeNode right;</li>
+<li>TreeNode(int x) { val = x; }</li>
+<li>}<br>*/<br>class Solution {<br> public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {<pre><code>if (t1 == null)
+    return t2;
+Stack &lt; TreeNode[] &gt; stack = new Stack &lt; &gt; ();
+stack.push(new TreeNode[] {t1, t2});
+while (!stack.isEmpty()) {
+    TreeNode[] t = stack.pop();
+    if (t[0] == null || t[1] == null) {
+        continue;
+    }
+    t[0].val += t[1].val;
+    //right first
+    if (t[0].right == null) {
+        t[0].right = t[1].right;
+    } else {
+        stack.push(new TreeNode[] {t[0].right, t[1].right});
+    }
+    //left first
+    if (t[0].left == null) {
+        t[0].left = t[1].left;
+    } else {
+        stack.push(new TreeNode[] {t[0].left, t[1].left});
+    }
+}
+return t1;
+</code></pre> }<br>}</li>
+</ul>
+
+        
+
+        
+    </div>
+    
+
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/26/617-Merge-Two-Binary-Trees/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="617-merge-Trees" class="article article-type-617-merge  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/26/Trees/">Trees</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/26/Trees/" class="archive-article-date">
+  	<time datetime="2020-04-26T11:59:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-26</time>
+</a>
+        
+      </header>
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        
+
+        
+    </div>
+    
+
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/26/Trees/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-NetworkKnowleges1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1138,228 +1310,9 @@
 
 
   
-    <article id="post-Input系统ANR总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/30/Input系统ANR总结/">Input系统ANR总结</a>
-    </h1>
-  
-
-        
-        <a href="/2018/03/30/Input系统ANR总结/" class="archive-article-date">
-  	<time datetime="2018-03-30T07:46:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-30</time>
-</a>
-        
-      </header>
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          <p>&emsp;&emsp; InputReader 的工作主要是:</p>
-<ul>
-<li><p>调用 EventHub 的<code>getEvents()</code>读取节点 /dev/input 的 input_event 结构体，转换成 RawEvent 结构体， RawEvent 根据不同 InputMapper 来转换相应的 EventEntry，比如按键事件，那么对应的是 KeyEntry ，触摸事件则对应的是 MotionEntry 。那么这个过程就是将 input_event 转换成 EventEntry 。</p>
-</li>
-<li><p>将事件添加到 mInboundQueue 队列尾部，加入该队列前首先会执行<code>IMS.interceptKeyBeforeQueueing(...)</code>方法，在这个方法里可以增加业务逻辑，然后会执行<code>IMS.filterInputEvent(...)</code>方法，这个方法用来处理可拦截事件，当该方法的返回值为 false 的时候，会直接拦截，这种情况下，该事件没有机会加入到 mInboundQueue 队列，不会再继续往下分发，如果事件没有被拦截到，那么该事件将会被加入到 mInboundQueue 队列尾部，事件加入到 mInboundQueue 队列之后，会通过<code>mLooper-&gt;wake</code>来唤醒 InputDispatcher 线程。</p>
-</li>
-<li><p>在InputReader 的工作过程中，还会调用<code>KeyboardInputMapper.processKey()</code>来记录按下 down 事件的时间点。</p>
-</li>
-</ul>
-<p>&emsp;&emsp; InputDispatcher 的工作主要是:</p>
-<ul>
-<li><p>通过调用<code>dispatchOnceInnerLocked()</code>从 InputDispatcher 的 mInboundQueue 队列中取出事件 EventEntry 。该方法开始执行的时间点是后续操作 dispatchEntry 的分发事件。获取到 EventEntry 事件之后，会生成事件 DispatchEntry 并加入 connection 的 outbound 队列 。<code>startDispatchCycleLocked()</code>负责从 outboundQueue 队列中取出事件 DispatchEntry ，并放入 connection 的 waitQueue 队列中。</p>
-</li>
-<li><p>通过<code>runCommandsLockedInterruptible()</code>方法循环遍历的方式，依次处理 mCommandQueue 队列中的所有命令。而 mCommandQueue 队列中的命令是通过<code>postCommandLocked()</code>方式向该队列添加的，ANR 回调命令便是在这个时机执行。</p>
-</li>
-<li><p><code>handleTargetsNotReadyLocked()</code>方法会判断是否等待超过 5s 来决定是否调用<code>onANRLocked()</code>。</p>
-</li>
-</ul>
-
-        
-
-        
-    </div>
-    
-
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/笔记//" class="article-tag-list-link color3">笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/03/30/Input系统ANR总结/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Input系统之InputDisptcher线程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/30/Input系统之InputDisptcher线程/">Input系统之InputDisptcher线程</a>
-    </h1>
-  
-
-        
-        <a href="/2018/03/30/Input系统之InputDisptcher线程/" class="archive-article-date">
-  	<time datetime="2018-03-30T05:17:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-30</time>
-</a>
-        
-      </header>
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          <p>&emsp;&emsp; InputReader 利用 EventHub 获取数据后生成 EventEntry 事件，加入到 InputDispatcher 的 mInboundQueue 队列，再唤醒 InputDispatcher 线程。InputDispatcher，同样从 threadLoop 为起点开始。<code>threadLoop()</code>中执行完<code>dispatchOnce()</code>之后会返回 Bool 类型的值。线程 Thread 类中有一个虚函数 <code>threadLoop()</code>，对于 Thread 的派生类 InputDispatcherThread 就实现了<code>threadLoop()</code>方法。事件的读取和派送过程是一直循环的，这就需要<code>threadLoop()</code>不断循环的执行。在 Thread 的<code>run()</code>方法中会实现创建线程的过程，在 Thread 类的<code>run()</code>方法执行后，会调用底层库 libpthread 的方法<code>pthread_create()</code>创建线程，并执行回调方法<code>_threadLoop()</code>。<code>_threadLoop()</code>便控制着<code>threadLoop()</code>的循环，这是在<code>_threadLoop()</code>方法中，有一个do while循环，每次执行完<code>threadLoop()</code>之后会记录<code>threadLoop()</code>的返回值，如果返回值不是 false ，那么便会一直循环执行<code>threadLoop()</code>。</p>
-<p>&emsp;&emsp; InputDispatcher 对象在初始化的过程中，需要创建自己的 Looper 对象，然后获取分发超时参数，超时参数来自于 IMS ，参数默认值 keyRepeatTimeout = 500 ，keyRepeatDelay = 50。事件的分发是通过不断循环地调用 InputDispatcher 的<code>dispatchOnce()</code>来分发事件。在<code>dispatchOnce()</code>方法中，</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dispatchOnce()</span><br><span class="line">	dispatchOnceInnerLocked(...)</span><br><span class="line">		mInboundQueue.dequeueAtHead()</span><br><span class="line">		resetANRTimeoutsLocked()</span><br><span class="line">		dispatchKeyLocked(...)</span><br><span class="line">		dropInboundEventLocked(...)</span><br><span class="line">		releasePendingEventLocked()</span><br><span class="line">	runCommandsLockedInterruptible()</span><br><span class="line">	mLooper-&gt;pollOnce(timeoutMillis)</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;在<code>dispathOnceInnerLocked(...)</code>方法中，首先判断是否需要冻结事件分发工作不再执行，如果事件分发正常进行，判断事件分发的事件点距离该事件加入 mInboundQueue 的时间是否超过 500ms，超过500ms，则认为 app 切换过期，接下来就需要判断在 mInboundQueue 中是否有事件需要处理，如果没有需要处理的事件，那么会直接 return 返回。如果存在需要处理的事件，那么需要从 mInboundQueue 中取出头部的事件<code>mInboundQueue.dequeueAtHead()</code>，接着调用<code>resetANRTimeoutsLocked()</code>重置 ANR 信息。获取到需要处理的事件 mPendingEvent 之后，判断待处理事件的类型，根据不同的类型会相应的执行分发事件的操作，比如对于按键事件的分发则是通过<code>dispatchKeyLocked(...)</code>来实现的，分发动作完成之后会进行任务完成之后 done 的操作，首先需要判断是否需要丢弃事件，对于需要丢弃的事件，那么需要调用<code>dropInboundEventLocked(...)</code>来处理，最后还需要调用<code>releasePendingEventLocked()</code>释放当前正在处理的事件 mPendingEvent。在 dispatchKeyLocked 的分发事件执行完之后，</p>
-<ul>
-<li>不会执行 done 的情况:<ul>
-<li>当前 Event 时间小于唤醒时间</li>
-<li>让 policy 有机会执行拦截操作</li>
-<li>调用 findFocusedWindowTargetsLocked 方法的返回结果是 INPUT_EVENT_INJECTION_PENDING, 即 targets 没有处于 Ready 状态</li>
-</ul>
-</li>
-<li>会执行 done 的情况:<ul>
-<li>该事件需要丢弃，即 dropReason != DROP_REASON_NOT_DROPPED</li>
-<li>findFocusedWindowTargetsLocked 的返回结果不是 INPUT_EVENT_INJECTION_PENDING(没有正在处理的事件)</li>
-</ul>
-</li>
-</ul>
-<p>&emsp;&emsp;在<code>dispatchKeyLocked()</code>方法中，会根据事件的 interceptKeyResult 的类型来进行不同的处理，如果 interceptKeyResult 的类型为<code>KeyEntry::INTERCEPT_KEY_RESULT_TRY_AGAIN_LATER</code>那么会进行唤醒时间的判断，如果当前时间小于唤醒时间，那么会进入等待状态，同时返回 false 。如果 interceptKetResult 的类型为<code>KeyEntry::INTERCEPT_KEY_RESULT_UNKNOWN</code>，那么就会让 policy 有机会执行拦截操作，同时也会返回 false 。如果需要丢弃该事件，需要执行清理操作，直接返回 true 。然后需要做的就是调用方法<code>findFocusedWindowTargetsLocked(...)</code>寻找焦点。如果寻找焦点失败，那么直接返回 false 。只有寻找焦点的结果 injectionResult 是成功的，那么才有机会真正的分发事件<code>dispatchEventLocked(...)</code>，因此可知，下列场景可能导致无法分发事件。</p>
-<ul>
-<li>当前时间小于唤醒时间</li>
-<li>policy 提前拦截事件</li>
-<li>需要 drop 事件的情况</li>
-<li>寻找聚焦窗口失败</li>
-</ul>
-<p>&emsp;&emsp;如果不出现上述的这些情况，那么会正常进入事件分发的过程，在事件分发完成之后，也会正常进入前面提到的 Done 的处理过程，</p>
-
-        
-
-        
-    </div>
-    
-
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/笔记//" class="article-tag-list-link color3">笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/03/30/Input系统之InputDisptcher线程/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1451,6 +1404,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Android</a>
               </li>
              
@@ -1459,11 +1416,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+                <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Git</a>
+                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1472,10 +1429,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
               </li>
             
             <div class="clearfix"></div>
