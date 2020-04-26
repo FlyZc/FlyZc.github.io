@@ -7,7 +7,7 @@ categories:
     - 笔记
 ---
 
-### ICMP协议介绍
+#### ICMP协议介绍
 
 在日常工作中，我们通常会用到 ping、tracert(traceroute)命令来检测网络链路状况和跟踪路由。Ping 和 tracert(traceroute)是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？
 
@@ -58,7 +58,7 @@ ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的�
 从IP数据包首部格式中我们可以看到有个`TTL(Time to Live)`的字段，每经过一次路由器，它的值就会减1，直到减到0时，该数据包就会被丢弃，此时路由器就会发送一个ICMP <font color=#0000FF>超时消息</font>通知发送端主机该数据包已被丢弃。
 设置 TTL 的主要目的，是为了避免在路由环路的情况下，IP 包无休止地在网络上被转发。
 
-### ping命令工作过程
+#### ping命令工作过程
 
 现有主机A（192.168.0.1）和主机B（192.168.0.2），我们在主机A上输入命令：ping 192.168.0.2之后：
 
@@ -74,9 +74,9 @@ IP数据包构建完成后，再交给数据链路层处理，加上 MAC 首部�
 
 如果两台主机不在同一个网段，那么还会涉及到网关、路由器的转发，但是 ICMP 消息的构造依旧是不变的，路由器将数据包转发另一个网段时需要修改 MAC 帧首部源 MAC 地址字段的值。可以看出，在整个 ping 程序的执行过程中使用了 ICMP 里面的 ECHO REQUEST（回送请求：8 ） 和 ECHO REPLY （回送应答：0）两种报文类型。
 
-### Ping 命令案例分析
+#### Ping 命令案例分析
 
-#### Localhost、127.0.0.1和本机ip的区别
+##### Localhost、127.0.0.1和本机ip的区别
 我们通过 Ping 程序来检测本机到目标主机的网络状况，在构建 IP 包的过程中，我们需要将本机 IP 地址设置为源IP，在现实场景中，我们经常也会看到 localhost, 127.0.0.1，这与本机 IP 又有何联系，如果我们分别 ping localhost 和 127.0.0.1又会是什么样呢？继续往下分析。
 
 首先我们来 ping localhost:
@@ -97,9 +97,9 @@ IP 数据包中协议字段通过设置为 1 来标识 ICMP 协议，同事设�
 
 最后我们再来看本地 IP 地址，通常情况下，“本机IP地址”指的是“本机物理网卡所绑定的网络协议地址”。我们 ping 本地 IP，通过抓包可以看到，只能在环回接口抓到相应的数据包，所以数据包同样不会通过网卡转发出去，但是如果禁用网卡，这时驱动程序未能获得本地主机IP，再 ping 本地 IP，我们可以看到会有“PING:传输失败。常见故障”的提示信息。
 
-### Traceroute/Tracert 命令工作过程
+#### Traceroute/Tracert 命令工作过程
 
-#### Traceroute
+##### Traceroute
 
 前面我们讲到 ping 命令用到 ICMP 中的查询报文来检测链路的状况，而 traceroute 命令则是利用了 ICMP 差错报文来实现。我们通过 wireshark 抓包来分析路由跟踪的整个过程，
 <div align=center><img src="NetworkKnowleges1/traceroute_all.png"> </div>
@@ -118,7 +118,7 @@ IP 数据包中协议字段通过设置为 1 来标识 ICMP 协议，同事设�
 
 <div align=center><img src="NetworkKnowleges1/traceroute_process.png"> </div>
 
-#### Tracert
+##### Tracert
 
 与 traceroute 不同的地方是，tracert 通过构造 ICMP 查询报文类型来跟踪源地址到目的地址的路由。
 

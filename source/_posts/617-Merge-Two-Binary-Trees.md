@@ -2,7 +2,9 @@
 title: 617-Merge Two Binary Trees
 date: 2020-02-26 20:00:17
 tags:
+    - LeetCode
 categories:
+    - 算法
 ---
 
 ##### Description
@@ -47,7 +49,7 @@ class Solution {
             } else {
                 stack.push(new TreeNode[] {t[0].right, t[1].right});
             }
-            //left first
+            //left
             if (t[0].left == null) {
                 t[0].left = t[1].left;
             } else {
