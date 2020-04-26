@@ -15,6 +15,8 @@ Example 1:
 
 <div align=center><img src="617-Merge-Two-Binary-Trees/61701.png"> </div>
 
+**Note:** The merging process must start from the root nodes of both trees.
+
 #### Code
 
 ```java
