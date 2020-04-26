@@ -46,16 +46,15 @@ ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的�
 * 4：数据包太大需要分片但不允许分片（Fragmentation needed but no frag）
     * 路由器在转发数据包的过程中，若数据包的大小超过 MTU，继续转发数据包，需要将数据包进行分片，此时如果数据包首部的 DF(Don't Fragment) 字段为 1 ，那么路由器会直接丢弃该数据包，通过 ICMP消息告知发送端主机数据发送失败的原因为<font color=#FF0000>数据包太大需要分片但不允许分片</font>。
 
-<blockquote><font color=#0000FF> 原点抑制:4</font>
-当链路发送拥塞时，通过向发送端主机发送<font color=#0000FF>原点抑制</font>消息告知主机链路发生了拥堵的情况，从而增大数据包发送的时间间隔，达到减少网络拥堵的目的。</blockquote>
+> <font color=#0000FF> 原点抑制:4</font>
+当链路发送拥塞时，通过向发送端主机发送<font color=#0000FF>原点抑制</font>消息告知主机链路发生了拥堵的情况，从而增大数据包发送的时间间隔，达到减少网络拥堵的目的。
 
-<blockquote><font color=#0000FF> 重定向消息:5</font>
+> <font color=#0000FF> 重定向消息:5</font>
 如果路由器发现发送端主机使用了「不是最优」的路径发送数据，那么它会返回一个 ICMP <font color=#0000FF>重定向消息</font>告知主机更合适的路由信息。
-</blockquote>
 
-<blockquote><font color=#0000FF> 超时消息:11</font>
+> <font color=#0000FF> 超时消息:11</font>
 从IP数据包首部格式中我们可以看到有个`TTL(Time to Live)`的字段，每经过一次路由器，它的值就会减1，直到减到0时，该数据包就会被丢弃，此时路由器就会发送一个ICMP <font color=#0000FF>超时消息</font>通知发送端主机该数据包已被丢弃。
-设置 TTL 的主要目的，是为了避免在路由环路的情况下，IP 包无休止地在网络上被转发。</blockquote>
+设置 TTL 的主要目的，是为了避免在路由环路的情况下，IP 包无休止地在网络上被转发。
 
 #### ping命令工作过程
 
