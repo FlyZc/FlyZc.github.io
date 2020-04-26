@@ -49,10 +49,12 @@ ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的�
 > <font color=#0000FF> 原点抑制:4</font>
 当链路发送拥塞时，通过向发送端主机发送<font color=#0000FF>原点抑制</font>消息告知主机链路发生了拥堵的情况，从而增大数据包发送的时间间隔，达到减少网络拥堵的目的。
 
+&nbsp;
 
 > <font color=#0000FF> 重定向消息:5</font>
 如果路由器发现发送端主机使用了「不是最优」的路径发送数据，那么它会返回一个 ICMP <font color=#0000FF>重定向消息</font>告知主机更合适的路由信息。
 
+&nbsp;
 
 > <font color=#0000FF> 超时消息:11</font>
 从IP数据包首部格式中我们可以看到有个`TTL(Time to Live)`的字段，每经过一次路由器，它的值就会减1，直到减到0时，该数据包就会被丢弃，此时路由器就会发送一个ICMP <font color=#0000FF>超时消息</font>通知发送端主机该数据包已被丢弃。
