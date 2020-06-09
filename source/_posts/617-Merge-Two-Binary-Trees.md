@@ -1,6 +1,6 @@
 ---
 title: 617-Merge Two Binary Trees
-date: 2020-02-26 20:00:17
+date: 2020-06-08 03:00:17
 tags:
     - LeetCode
 categories:
