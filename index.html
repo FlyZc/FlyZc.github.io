@@ -146,72 +146,6 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-Test" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/13/Test/">Test</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/13/Test/" class="archive-article-date">
-  	<time datetime="2020-06-13T09:07:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-13</time>
-</a>
-        
-      </header>
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          <div align="center"><img src="/2020/06/13/Test/61701.png"> </div>
-        
-
-        
-    </div>
-    
-
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/13/Test/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-617-Merge-Two-Binary-Trees" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1269,6 +1203,112 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/04/03/亮灭屏流程/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Input系统ANR总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/30/Input系统ANR总结/">Input系统ANR总结</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/30/Input系统ANR总结/" class="archive-article-date">
+  	<time datetime="2018-03-30T07:46:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-30</time>
+</a>
+        
+      </header>
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          <p>&emsp;&emsp; InputReader 的工作主要是:</p>
+<ul>
+<li><p>调用 EventHub 的<code>getEvents()</code>读取节点 /dev/input 的 input_event 结构体，转换成 RawEvent 结构体， RawEvent 根据不同 InputMapper 来转换相应的 EventEntry，比如按键事件，那么对应的是 KeyEntry ，触摸事件则对应的是 MotionEntry 。那么这个过程就是将 input_event 转换成 EventEntry 。</p>
+</li>
+<li><p>将事件添加到 mInboundQueue 队列尾部，加入该队列前首先会执行<code>IMS.interceptKeyBeforeQueueing(...)</code>方法，在这个方法里可以增加业务逻辑，然后会执行<code>IMS.filterInputEvent(...)</code>方法，这个方法用来处理可拦截事件，当该方法的返回值为 false 的时候，会直接拦截，这种情况下，该事件没有机会加入到 mInboundQueue 队列，不会再继续往下分发，如果事件没有被拦截到，那么该事件将会被加入到 mInboundQueue 队列尾部，事件加入到 mInboundQueue 队列之后，会通过<code>mLooper-&gt;wake</code>来唤醒 InputDispatcher 线程。</p>
+</li>
+<li><p>在InputReader 的工作过程中，还会调用<code>KeyboardInputMapper.processKey()</code>来记录按下 down 事件的时间点。</p>
+</li>
+</ul>
+<p>&emsp;&emsp; InputDispatcher 的工作主要是:</p>
+<ul>
+<li><p>通过调用<code>dispatchOnceInnerLocked()</code>从 InputDispatcher 的 mInboundQueue 队列中取出事件 EventEntry 。该方法开始执行的时间点是后续操作 dispatchEntry 的分发事件。获取到 EventEntry 事件之后，会生成事件 DispatchEntry 并加入 connection 的 outbound 队列 。<code>startDispatchCycleLocked()</code>负责从 outboundQueue 队列中取出事件 DispatchEntry ，并放入 connection 的 waitQueue 队列中。</p>
+</li>
+<li><p>通过<code>runCommandsLockedInterruptible()</code>方法循环遍历的方式，依次处理 mCommandQueue 队列中的所有命令。而 mCommandQueue 队列中的命令是通过<code>postCommandLocked()</code>方式向该队列添加的，ANR 回调命令便是在这个时机执行。</p>
+</li>
+<li><p><code>handleTargetsNotReadyLocked()</code>方法会判断是否等待超过 5s 来决定是否调用<code>onANRLocked()</code>。</p>
+</li>
+</ul>
+
+        
+
+        
+    </div>
+    
+
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/笔记//" class="article-tag-list-link color3">笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/03/30/Input系统ANR总结/">展开全文 >></a>
         </p>
       
 
