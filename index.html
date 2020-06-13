@@ -146,6 +146,106 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-540-Single-Element-in-a-Sorted-Array" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/10/540-Single-Element-in-a-Sorted-Array/">540-Single Element in a Sorted Array</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/10/540-Single-Element-in-a-Sorted-Array/" class="archive-article-date">
+  	<time datetime="2020-06-09T17:45:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-10</time>
+</a>
+        
+      </header>
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          <h5 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h5><p>You are given a sorted array consisting of only integers where every element appears exactly twice, except for one element which appears exactly once. Find this single element that appears only once.</p>
+<p>Follow up: Your solution should run in O(log n) time and O(1) space.</p>
+<p>Example 1:</p>
+<p>Input: nums = [1,1,2,3,3,4,4,8,8]<br>Output: 2</p>
+<p>Example 2:</p>
+<p>Input: nums = [3,3,7,7,10,11,11]<br>Output: 10</p>
+<p>Constraints:</p>
+<ul>
+<li>1 &lt;= nums.length &lt;= 10^5</li>
+<li>0 &lt;= nums[i] &lt;= 10^5</li>
+</ul>
+<h5 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">singleNonDuplicate</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> lo = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> hi = nums.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (lo &lt; hi) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">boolean</span> halvesAreEven = (hi - mid) % <span class="number">2</span> == <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (nums[mid + <span class="number">1</span>] == nums[mid]) &#123;</span><br><span class="line">                <span class="keyword">if</span> (halvesAreEven) &#123;</span><br><span class="line">                    lo = mid + <span class="number">2</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    hi = mid - <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid - <span class="number">1</span>] == nums[mid]) &#123;</span><br><span class="line">                <span class="keyword">if</span> (halvesAreEven) &#123;</span><br><span class="line">                    hi = mid - <span class="number">2</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    lo = mid + <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> nums[mid];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> nums[lo];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        
+
+        
+    </div>
+    
+
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">LeetCode</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/10/540-Single-Element-in-a-Sorted-Array/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-617-Merge-Two-Binary-Trees" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1232,112 +1332,6 @@
 
 
   
-    <article id="post-Input系统ANR总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/30/Input系统ANR总结/">Input系统ANR总结</a>
-    </h1>
-  
-
-        
-        <a href="/2018/03/30/Input系统ANR总结/" class="archive-article-date">
-  	<time datetime="2018-03-30T07:46:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-30</time>
-</a>
-        
-      </header>
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          <p>&emsp;&emsp; InputReader 的工作主要是:</p>
-<ul>
-<li><p>调用 EventHub 的<code>getEvents()</code>读取节点 /dev/input 的 input_event 结构体，转换成 RawEvent 结构体， RawEvent 根据不同 InputMapper 来转换相应的 EventEntry，比如按键事件，那么对应的是 KeyEntry ，触摸事件则对应的是 MotionEntry 。那么这个过程就是将 input_event 转换成 EventEntry 。</p>
-</li>
-<li><p>将事件添加到 mInboundQueue 队列尾部，加入该队列前首先会执行<code>IMS.interceptKeyBeforeQueueing(...)</code>方法，在这个方法里可以增加业务逻辑，然后会执行<code>IMS.filterInputEvent(...)</code>方法，这个方法用来处理可拦截事件，当该方法的返回值为 false 的时候，会直接拦截，这种情况下，该事件没有机会加入到 mInboundQueue 队列，不会再继续往下分发，如果事件没有被拦截到，那么该事件将会被加入到 mInboundQueue 队列尾部，事件加入到 mInboundQueue 队列之后，会通过<code>mLooper-&gt;wake</code>来唤醒 InputDispatcher 线程。</p>
-</li>
-<li><p>在InputReader 的工作过程中，还会调用<code>KeyboardInputMapper.processKey()</code>来记录按下 down 事件的时间点。</p>
-</li>
-</ul>
-<p>&emsp;&emsp; InputDispatcher 的工作主要是:</p>
-<ul>
-<li><p>通过调用<code>dispatchOnceInnerLocked()</code>从 InputDispatcher 的 mInboundQueue 队列中取出事件 EventEntry 。该方法开始执行的时间点是后续操作 dispatchEntry 的分发事件。获取到 EventEntry 事件之后，会生成事件 DispatchEntry 并加入 connection 的 outbound 队列 。<code>startDispatchCycleLocked()</code>负责从 outboundQueue 队列中取出事件 DispatchEntry ，并放入 connection 的 waitQueue 队列中。</p>
-</li>
-<li><p>通过<code>runCommandsLockedInterruptible()</code>方法循环遍历的方式，依次处理 mCommandQueue 队列中的所有命令。而 mCommandQueue 队列中的命令是通过<code>postCommandLocked()</code>方式向该队列添加的，ANR 回调命令便是在这个时机执行。</p>
-</li>
-<li><p><code>handleTargetsNotReadyLocked()</code>方法会判断是否等待超过 5s 来决定是否调用<code>onANRLocked()</code>。</p>
-</li>
-</ul>
-
-        
-
-        
-    </div>
-    
-
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/笔记//" class="article-tag-list-link color3">笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/03/30/Input系统ANR总结/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1508,27 +1502,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
         <ul class="search-ul">
           
             <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title">友情链接1</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title">友情链接2</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title">友情链接3</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title">友情链接4</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title">友情链接5</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title">友情链接6</a>
+              <a href="https://www.processon.com/view/link/5e58792fe4b0c037b604bc35" target="_blank" class="search-title">ProcessOn</a>
             </li>
           
         </ul>
@@ -1539,7 +1513,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">私はこの場所をしつこく保つべきではありませんでしたが，あなたはここにいます。誰かが私の悩みについて私に尋ねた場合，私はあなたの名前を敢えて言わない。静けさ、夢を眠らせないで！</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">&lt;div style=&#34;margin:30px&#34;&gt; 私はこの場所をしつこく保つべきではありませんでしたが，あなたはここにいます。誰かが私の悩みについて私に尋ねた場合，私はあなたの名前を敢えて言わない。静けさ、夢を眠らせないで！&lt;/div&gt;</div>
   	  	
     	</section>
     
