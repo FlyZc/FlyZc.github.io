@@ -16,20 +16,20 @@
 <meta property="og:site_name" content="Welcome to Philo&#39;s World">
 <meta property="og:description" content="ICMP协议介绍在日常工作中，我们通常会用到 ping、tracert(traceroute)命令来检测网络链路状况和跟踪路由。Ping 和 tracert(traceroute)是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？ ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的作用就是确认IP包是否成功送达目标地址，如果某">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="/2020/02/20/NetworkKnowleges1/ICMP.png">
-<meta property="og:image" content="/2020/02/20/NetworkKnowleges1/localhost.png">
-<meta property="og:image" content="/2020/02/20/NetworkKnowleges1/wireshark_127.png">
-<meta property="og:image" content="/2020/02/20/NetworkKnowleges1/127.png">
-<meta property="og:image" content="/2020/02/20/NetworkKnowleges1/traceroute_all.png">
-<meta property="og:image" content="/2020/02/20/NetworkKnowleges1/traceroute_ttl1.png">
-<meta property="og:image" content="/2020/02/20/NetworkKnowleges1/traceroute_ttl2.png">
-<meta property="og:image" content="/2020/02/20/NetworkKnowleges1/traceroute_process.png">
-<meta property="og:image" content="/2020/02/20/NetworkKnowleges1/tracert.png">
+<meta property="og:image" content="/20/NetworkKnowleges1/ICMP.png">
+<meta property="og:image" content="/20/NetworkKnowleges1/localhost.png">
+<meta property="og:image" content="/20/NetworkKnowleges1/wireshark_127.png">
+<meta property="og:image" content="/20/NetworkKnowleges1/127.png">
+<meta property="og:image" content="/20/NetworkKnowleges1/traceroute_all.png">
+<meta property="og:image" content="/20/NetworkKnowleges1/traceroute_ttl1.png">
+<meta property="og:image" content="/20/NetworkKnowleges1/traceroute_ttl2.png">
+<meta property="og:image" content="/20/NetworkKnowleges1/traceroute_process.png">
+<meta property="og:image" content="/20/NetworkKnowleges1/tracert.png">
 <meta property="og:updated_time" content="2020-04-26T13:52:56.021Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ICMP 协议解析">
 <meta name="twitter:description" content="ICMP协议介绍在日常工作中，我们通常会用到 ping、tracert(traceroute)命令来检测网络链路状况和跟踪路由。Ping 和 tracert(traceroute)是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？ ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的作用就是确认IP包是否成功送达目标地址，如果某">
-<meta name="twitter:image" content="/2020/02/20/NetworkKnowleges1/ICMP.png">
+<meta name="twitter:image" content="/20/NetworkKnowleges1/ICMP.png">
   
     <link rel="alternative" href="/atom.xml" title="Welcome to Philo&#39;s World" type="application/atom+xml">
   
@@ -183,7 +183,7 @@
       
           <h4 id="ICMP协议介绍"><a href="#ICMP协议介绍" class="headerlink" title="ICMP协议介绍"></a>ICMP协议介绍</h4><p>在日常工作中，我们通常会用到 ping、tracert(traceroute)命令来检测网络链路状况和跟踪路由。Ping 和 tracert(traceroute)是基于 ICMP 协议工作的，我们首先来了解 ICMP 到底是什么？</p>
 <p>ICMP(Internet Control Message Protocol)，因特网控制报文协议，它的作用就是确认IP包是否成功送达目标地址，如果某个 IP 包未能达到目标地址，则会通过ICMP包告知IP数据包传输失败的原因。ICMP 报文封装到 IP 数据包里进行传输，不经过传输层，但我们通常认为 ICMP 协议是 IP 层的附属协议，属于网络层的协议。ICMP 的报文格式如下：</p>
-<div align="center"><img src="/2020/02/20/NetworkKnowleges1/ICMP.png"> </div>
+<div align="center"><img src="/20/NetworkKnowleges1/ICMP.png"> </div>
 
 <p>在 ICMP 首部格式中，类型字段(8为)大致标识了两种不同 ICMP 类型，常见类型的标识如下所示：</p>
 <ul>
@@ -242,32 +242,32 @@
 <p>如果两台主机不在同一个网段，那么还会涉及到网关、路由器的转发，但是 ICMP 消息的构造依旧是不变的，路由器将数据包转发另一个网段时需要修改 MAC 帧首部源 MAC 地址字段的值。可以看出，在整个 ping 程序的执行过程中使用了 ICMP 里面的 ECHO REQUEST（回送请求：8 ） 和 ECHO REPLY （回送应答：0）两种报文类型。</p>
 <h4 id="Ping-命令案例分析"><a href="#Ping-命令案例分析" class="headerlink" title="Ping 命令案例分析"></a>Ping 命令案例分析</h4><h5 id="Localhost、127-0-0-1和本机ip的区别"><a href="#Localhost、127-0-0-1和本机ip的区别" class="headerlink" title="Localhost、127.0.0.1和本机ip的区别"></a>Localhost、127.0.0.1和本机ip的区别</h5><p>我们通过 Ping 程序来检测本机到目标主机的网络状况，在构建 IP 包的过程中，我们需要将本机 IP 地址设置为源IP，在现实场景中，我们经常也会看到 localhost, 127.0.0.1，这与本机 IP 又有何联系，如果我们分别 ping localhost 和 127.0.0.1又会是什么样呢？继续往下分析。</p>
 <p>首先我们来 ping localhost:</p>
-<div align="center"><img src="/2020/02/20/NetworkKnowleges1/localhost.png"> </div>
+<div align="center"><img src="/20/NetworkKnowleges1/localhost.png"> </div>
 
 <p>从图中可以看出，ping localhost的过程中，会解析成 ping 127.0.0.1，这是因为 localhost 是一个域名，从hosts 文件中可以看出，这个域名是预定义的，它默认指向的是 127.0.0.1 这个 IP 地址。</p>
 <p>127.0.0.1 被称作环回地址，它是主机用于向自身发起通信的一个特殊地址，包含环回地址的IP数据包不会到达外部网络接口，离开主机的包，也就是说：IP 数据包不会通过数据链路层，物理层，以太网传出去，而是可以直接在自己的网络层，运输层进行处理。当操作系统初始化本机的TCP/IP协议栈时，设置协议栈本身的IP地址为127.0.0.1（保留地址），并注入路由表。当IP层接收到目的地址为127.0.0.1的数据包时，不调用网卡驱动进行二次封装，而是立即转发到本机IP层进行处理，当我们禁用网卡后，ping 127.0.0.1也是能 ping 通的。</p>
-<div align="center"><img src="/2020/02/20/NetworkKnowleges1/wireshark_127.png"> </div>
+<div align="center"><img src="/20/NetworkKnowleges1/wireshark_127.png"> </div>
 
 <p>通过抓包我们可以看到 ping 过程中<font color="#0000FF">ICMP Echo Request </font>消息和 <font color="#0000FF">ICMP Echo Reply</font>消息的交互过程，查看数据包内容可以看到ICMP报文首部字段以及IP数据包首部字段的数据：</p>
-<div align="center"><img src="/2020/02/20/NetworkKnowleges1/127.png"> </div>
+<div align="center"><img src="/20/NetworkKnowleges1/127.png"> </div>
 
 <p>IP 数据包中协议字段通过设置为 1 来标识 ICMP 协议，同事设置源地址和目的地址都为 127.0.0.1，在ICMP 首部格式中，设置类型来区分<font color="#0000FF">回送应答</font>以及<font color="#0000FF">回送请求</font>，不管是<font color="#0000FF">回送应答</font>的报文还是<font color="#0000FF">回送请求</font>的报文，<font color="#0000FF">代码(Code)</font>字段都设置为 0。</p>
 <p>最后我们再来看本地 IP 地址，通常情况下，“本机IP地址”指的是“本机物理网卡所绑定的网络协议地址”。我们 ping 本地 IP，通过抓包可以看到，只能在环回接口抓到相应的数据包，所以数据包同样不会通过网卡转发出去，但是如果禁用网卡，这时驱动程序未能获得本地主机IP，再 ping 本地 IP，我们可以看到会有“PING:传输失败。常见故障”的提示信息。</p>
 <h4 id="Traceroute-Tracert-命令工作过程"><a href="#Traceroute-Tracert-命令工作过程" class="headerlink" title="Traceroute/Tracert 命令工作过程"></a>Traceroute/Tracert 命令工作过程</h4><h5 id="Traceroute"><a href="#Traceroute" class="headerlink" title="Traceroute"></a>Traceroute</h5><p>前面我们讲到 ping 命令用到 ICMP 中的查询报文来检测链路的状况，而 traceroute 命令则是利用了 ICMP 差错报文来实现。我们通过 wireshark 抓包来分析路由跟踪的整个过程，</p>
-<div align="center"><img src="/2020/02/20/NetworkKnowleges1/traceroute_all.png"> </div>
+<div align="center"><img src="/20/NetworkKnowleges1/traceroute_all.png"> </div>
 
 <p>源主机通过 traceroute 追踪路由时，首先会构造 UDP 报文段，并通过 IP 数据包封装。</p>
-<div align="center"><img src="/2020/02/20/NetworkKnowleges1/traceroute_ttl1.png"> </div>
+<div align="center"><img src="/20/NetworkKnowleges1/traceroute_ttl1.png"> </div>
 
 <p>在 IP 数据包首部会设置特殊的TTL值，来追踪源主机和目标主机之间的路由。首先它给目标主机发送一个 TTL=1 的数据包，那么这个数据包一旦在路上遇到一个路由器，TTL就变成了0（TTL规则是每经过一个路由器都会减1），因为TTL=0了，所以路由器就会把这个数据包丢掉，然后产生一个错误类型（超时:11）的 ICMP 报文回发给源主机。这个时候源主机就拿到了第一个路由节点相关信息了。</p>
-<div align="center"><img src="/2020/02/20/NetworkKnowleges1/traceroute_ttl2.png"> </div>
+<div align="center"><img src="/20/NetworkKnowleges1/traceroute_ttl2.png"> </div>
 
 <p>接着，源主机再给目标主机发一个 TTL=2 的数据包，依旧上述流程走一遍，就知道第二个路由节点的IP和耗时情况等信息。如此反复进行，traceroute 就可以拿到从主机A到主机B之间所有路由器的信息了。</p>
 <p>你可能会有疑问，数据包到达目标主机时，此时 TTL 的值应该为 1，那此时目标主机应该怎么回复源主机？在源主机构造 UDP 报文段的时候，会设置一个完全无法到达的目的端口号(大于30000)，那么此时目标主机会返回给源主机<font color="#0000FF">端口不可达</font>的 ICMP 差错报文。当源主机收到差错报文类型是端口不可达时，说明发送方发出探测包到达了目标主机。从抓包数据中我们也可以看出，一条路径上的每个设备 traceroute 要测3次，我们可以得到每次测试的传输时延等信息。</p>
-<div align="center"><img src="/2020/02/20/NetworkKnowleges1/traceroute_process.png"> </div>
+<div align="center"><img src="/20/NetworkKnowleges1/traceroute_process.png"> </div>
 
 <h5 id="Tracert"><a href="#Tracert" class="headerlink" title="Tracert"></a>Tracert</h5><p>与 traceroute 不同的地方是，tracert 通过构造 ICMP 查询报文类型来跟踪源地址到目的地址的路由。</p>
-<div align="center"><img src="/2020/02/20/NetworkKnowleges1/tracert.png"> </div>
+<div align="center"><img src="/20/NetworkKnowleges1/tracert.png"> </div>
 
 <p>源主机首先向目的地址发出一个<font color="#0000FF">ICMP回送请求（ICMP Echo request）</font>数据包，并将TTL设置为1，经过路由器时，TTL会被减1。当TTL变为0时，包被丢弃，路由器向源地址发回一个<font color="#0000FF">ICMP超时通知（ICMP Time Exceeded Message）</font>，内含发送IP包的源地址，IP包的所有内容及路由器的IP地址。当源地址收到该ICMP包时，显示这一跳路由信息。</p>
 <p>接着，源主机再给目标主机发一个 TTL=2 的数据包，依旧上述流程走一遍，就知道第二个路由节点的IP和耗时情况等信息。如此反复进行，直至目标地址收到探测数据包，并返回ICMP回应答复（ICMPEcho Reply），当源地址收到ICMP Echo Reply包时停止 tracert，这样便拿到从主机A到主机B之间所有路由器的信息。</p>
