@@ -8,26 +8,28 @@ categories:
 ---
 
 ### 创建仓库
-* 进入一个目录    
+
+* 进入一个目录
     `cd dir`
-    
+
 * 为仓库新建一个空的目录  
     `mkdir myrepository`
 
-* 进入该新的目录   
-    `cd myrepository` 
+* 进入该新的目录
+    `cd myrepository`
 
 * 初始化目录，使其成为一个空的仓库  
     `git init`
 
 ### 往仓库添加内容
-* 使用`add`命令往仓库添加内容    
+
+* 使用`add`命令往仓库添加内容
     `git add "file_name"`
 
 * 提交内容  
-    `git commit -m "notes"`   
-    参数说明：   
-    * `-m: "notes"`描述此次修改的说明，如果不加 `-m` 参数，那么会进去`vi`编辑模式，让你添加内容    
+    `git commit -m "notes"`
+    参数说明：
+  * `-m: "notes"`描述此次修改的说明，如果不加 `-m` 参数，那么会进去`vi`编辑模式，让你添加内容    
     * `vi`模式中, 
         * 命令 i 表示插入  
         * `shift + :`表示进入命令行，可以输入指令  
@@ -44,6 +46,7 @@ categories:
 * 可以使用`git status`来查看当前的仓库状态，包括是否发生更改，但是还未提交。当我们知道有内容更改后可以继续用`git diff`命令来查看修改的东西
 
 ### 版本回退
+
 * 使用命令`git reset --hard HEAD^`来回到上一个版本
     * `HEAD^`表示上一个版本
     * `HEAD^^`表示回退两个版本，以此类推
