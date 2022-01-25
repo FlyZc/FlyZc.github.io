@@ -1,5 +1,5 @@
 ---
-title: Centos 7安装Mysql
+title: Centos 7.6安装Mysql
 date: 2022-01-25 21:27:28
 tags:
 	- Mysql
@@ -11,7 +11,7 @@ categories:
 
 * `wget -i -c http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm`
 * `yum -y install mysql57-community-release-el7-10.noarch.rpm`
-* yum -y install mysql-community-server
+* `yum -y install mysql-community-server`
 * 如果安装过程中出现如下类似信息：
 
 >Failing package is: mysql-community-libs-compat-5.7.37-1.el7.x86_64
