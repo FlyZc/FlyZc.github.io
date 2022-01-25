@@ -24,22 +24,22 @@ Output:
 ##### Code
 
 ```Java
-    class Solution {
-        public int[][] reconstructQueue(int[][] people) {
-        Arrays.sort(people, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] a, int[] b) {
-                if (a[0] != b[0]) {
-                    return b[0] - a[0];
-                }
-            return a[1] - b[1];
+class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+    Arrays.sort(people, new Comparator<int[]>() {
+        @Override
+        public int compare(int[] a, int[] b) {
+            if (a[0] != b[0]) {
+                return b[0] - a[0];
             }
-        });
-
-        List<int[]> result = new LinkedList<>();
-        for(int[] p : people){
-            result.add(p[1], p);
+        return a[1] - b[1];
         }
-        return result.toArray(new int[people.length][]);
+    });
+
+    List<int[]> result = new LinkedList<>();
+    for(int[] p : people){
+        result.add(p[1], p);
     }
+    return result.toArray(new int[people.length][]);
+}
 ```
