@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="FlyZc.github.io">
-  <title>ANR-ContentProvider | Welcome to Philo&#39;s World</title>
+  <title>Centos 7安装Mysql | Welcome to Philo&#39;s World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="&amp;emsp;&amp;emsp; 当 ActivityManager 线程中的 AMS.MainHandler 收到 CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG 消息时会触发 ContentProvider Timeout 事件。ContentProvider 超时与 Provider 进程启动过程相关， CONTENT_PROVIDER_PUBLISH_TIMEOUT =">
-<meta name="keywords" content="Android,四大组件">
+  <meta name="description" content="安装mysql服务 wget -i -c http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm yum -y install mysql57-community-release-el7-10.noarch.rpm yum -y install mysql-community-server 如果安装过程中出现如下类似">
+<meta name="keywords" content="Mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ANR-ContentProvider">
-<meta property="og:url" content="FlyZc.github.io/2018/02/24/ANR-ContentProvider/index.html">
+<meta property="og:title" content="Centos 7安装Mysql">
+<meta property="og:url" content="FlyZc.github.io/2022/01/25/Centos-7安装Mysql/index.html">
 <meta property="og:site_name" content="Welcome to Philo&#39;s World">
-<meta property="og:description" content="&amp;emsp;&amp;emsp; 当 ActivityManager 线程中的 AMS.MainHandler 收到 CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG 消息时会触发 ContentProvider Timeout 事件。ContentProvider 超时与 Provider 进程启动过程相关， CONTENT_PROVIDER_PUBLISH_TIMEOUT =">
+<meta property="og:description" content="安装mysql服务 wget -i -c http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm yum -y install mysql57-community-release-el7-10.noarch.rpm yum -y install mysql-community-server 如果安装过程中出现如下类似">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-04T05:59:18.673Z">
+<meta property="og:updated_time" content="2022-01-25T13:36:58.059Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ANR-ContentProvider">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp; 当 ActivityManager 线程中的 AMS.MainHandler 收到 CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG 消息时会触发 ContentProvider Timeout 事件。ContentProvider 超时与 Provider 进程启动过程相关， CONTENT_PROVIDER_PUBLISH_TIMEOUT =">
+<meta name="twitter:title" content="Centos 7安装Mysql">
+<meta name="twitter:description" content="安装mysql服务 wget -i -c http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm yum -y install mysql57-community-release-el7-10.noarch.rpm yum -y install mysql-community-server 如果安装过程中出现如下类似">
   
     <link rel="alternative" href="/atom.xml" title="Welcome to Philo&#39;s World" type="application/atom+xml">
   
@@ -161,20 +161,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ANR-ContentProvider" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Centos-7安装Mysql" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      ANR-ContentProvider
+      Centos 7安装Mysql
     </h1>
   
 
         
-        <a href="/2018/02/24/ANR-ContentProvider/" class="archive-article-date">
-  	<time datetime="2018-02-24T06:09:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-24</time>
+        <a href="/2022/01/25/Centos-7安装Mysql/" class="archive-article-date">
+  	<time datetime="2022-01-25T13:27:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-25</time>
 </a>
         
       </header>
@@ -183,16 +183,57 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-          <p>&emsp;&emsp; 当 ActivityManager 线程中的 AMS.MainHandler 收到 CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG 消息时会触发 ContentProvider Timeout 事件。ContentProvider 超时与 Provider 进程启动过程相关， CONTENT_PROVIDER_PUBLISH_TIMEOUT = 10s。</p>
-<h4 id="埋炸弹"><a href="#埋炸弹" class="headerlink" title="埋炸弹"></a>埋炸弹</h4><p>&emsp;&emsp;在 Provider 启动的过程中，埋炸弹会发生在进程创建的阶段，进程创建后会调用<code>AMS.attachApplicationLocked()</code>进入 system_server 进程。在<code>AMS.attachApplicationLocked()</code>方法中，app 进程存在正在启动中的 provider ,则超时10s后发送 CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG 消息。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (providers != <span class="keyword">null</span> &amp;&amp; checkAppInLaunchingProvidersLocked(app)) &#123;</span><br><span class="line">    Message msg = mHandler.obtainMessage(CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG);</span><br><span class="line">    msg.obj = app;</span><br><span class="line">    mHandler.sendMessageDelayed(msg, CONTENT_PROVIDER_PUBLISH_TIMEOUT);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="拆炸弹"><a href="#拆炸弹" class="headerlink" title="拆炸弹"></a>拆炸弹</h4><p>&emsp;&emsp;当 provider 通过<code>AMS.publishContentProviders(...)</code>成功 publish 之后,便会通过<code>mHandler.removeMessages(...)</code>拆除该炸弹。</p>
-<h4 id="引爆炸弹"><a href="#引爆炸弹" class="headerlink" title="引爆炸弹"></a>引爆炸弹</h4><p>&emsp;&emsp;在前面埋炸弹的过程，会通过<code>mHandler.sendMessageDelayed(msg, CONTENT_PROVIDER_PUBLISH_TIMEOUT)</code>来发送一个超时消息，那么在倒计时结束后便会向 system_server 进程中名为 ActivityManager 的 handler 线程发送 CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG 消息。该线程通过<code>handleMessage(...)</code>的方式，来处理超时消息。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">handleMessage(...)</span><br><span class="line">    AMS.processContentProviderPublishTimedOutLocked(...)</span><br><span class="line">        AMS.cleanupAppInLaunchingProvidersLocked(...)</span><br><span class="line">            AMS.removeDyingProviderLocked(...)</span><br><span class="line">        AMS.removeProcessLocked(...)</span><br></pre></td></tr></table></figure></p>
-<p>&emsp;&emsp;<code>removeDyingProviderLocked()</code>方法的作用是移除死亡的 provider，在处理的过程中跟 provider 的类型有关：</p>
-<ul>
-<li>对于 stable 类型的 provider (即conn.stableCount &gt; 0),则会杀掉所有跟该 provider 建立 stable 连接的非 persistent 进程</li>
-<li>对于 unstable 类型的 provider (即conn.unstableCount &gt; 0),并不会导致 client 进程被级联所杀</li>
+          <h3 id="安装mysql服务"><a href="#安装mysql服务" class="headerlink" title="安装mysql服务"></a>安装mysql服务</h3><ul>
+<li><code>wget -i -c http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm</code></li>
+<li><code>yum -y install mysql57-community-release-el7-10.noarch.rpm</code></li>
+<li>yum -y install mysql-community-server</li>
+<li>如果安装过程中出现如下类似信息：</li>
 </ul>
-<p>&emsp;&emsp;对于 Service, Broadcast 发生 ANR 之后,最终都会调用 AMS.appNotResponding 。对于 provider ,在其进程启动时 publish 过程可能会出现 ANR, 则会直接杀进程以及清理相应信息,而不会弹出 ANR 的对话框。</p>
+<blockquote>
+<p>Failing package is: mysql-community-libs-compat-5.7.37-1.el7.x86_64<br>GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql</p>
+</blockquote>
+<ul>
+<li>更新GPG<ul>
+<li><code>rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="启动mysql服务"><a href="#启动mysql服务" class="headerlink" title="启动mysql服务"></a>启动mysql服务</h3><ul>
+<li><code>systemctl start  mysqld.service</code></li>
+<li>设置mysql开机自启<ul>
+<li><code>systemctl enable mysqld</code></li>
+</ul>
+</li>
+<li>查看mysql状态<ul>
+<li><code>systemctl status mysqld.service</code></li>
+</ul>
+</li>
+<li>查看mysql临时密码<ul>
+<li><code>grep &quot;password&quot; /var/log/mysqld.log</code></li>
+</ul>
+</li>
+<li>登陆mysql<ul>
+<li><code>mysql -uroot -p</code></li>
+</ul>
+</li>
+<li>修改mysql密码<ul>
+<li><code>set global validate_password_policy=0;</code></li>
+<li><code>set global validate_password_length=1;</code></li>
+<li><code>alter user &#39;root&#39;@&#39;localhost&#39; identified by &#39;123456&#39;;</code></li>
+</ul>
+</li>
+<li>配置用户权限及授权<ul>
+<li><code>grant all on *.* to &#39;root&#39;@&#39;%&#39; identified by &#39;123456&#39;;</code></li>
+<li><code>grant all on *.* to &#39;root&#39;@&#39;localhost&#39; identified by &#39;123456&#39;;</code></li>
+<li><code>grant all on *.* to &#39;root&#39;@&#39;master&#39; identified by &#39;123456&#39;;</code></li>
+<li><code>flush privileges;</code></li>
+</ul>
+</li>
+<li>取消自动更新<ul>
+<li><code>yum -y remove mysql57-community-release-el7-10.noarch</code></li>
+</ul>
+</li>
+</ul>
 
         
 
@@ -229,11 +270,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">四大组件</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Mysql</a>
         		</li>
       		
 		</ul>
@@ -245,7 +282,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/笔记//" class="article-tag-list-link color3">笔记</a>
+        			<a href="/categories/数据库//" class="article-tag-list-link color4">数据库</a>
         		</li>
       		
 		</ul>
@@ -300,7 +337,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http:FlyZc.github.io/2018/02/24/ANR-ContentProvider/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http:FlyZc.github.io/2022/01/25/Centos-7安装Mysql/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -314,18 +351,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/03/11/Git/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Git使用总结
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/02/24/ANR-Broadcast/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">ANR-Broadcast</div>
+    <a href="/2022/01/24/VMware安装Hadoop环境/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">VMware安装Hadoop环境</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -356,8 +384,8 @@
   <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
 <script>
   var cloudTieConfig = {
-    url: "FlyZc.github.io/2018/02/24/ANR-ContentProvider/", 
-    sourceId: "ANR-ContentProvider",
+    url: "FlyZc.github.io/2022/01/25/Centos-7安装Mysql/", 
+    sourceId: "Centos-7安装Mysql",
     productKey: "true",
     target: "cloud-tie-wrapper"
   };

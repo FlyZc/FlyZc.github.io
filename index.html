@@ -61,6 +61,8 @@
 	        
 				<li><a href="/categories/大数据">大数据</a></li>
 	        
+				<li><a href="/categories/数据库">数据库</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -115,6 +117,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,13 +133,15 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 20%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/categories/笔记">笔记</a></li>
+					<li style="width: 20%"><a href="/categories/笔记">笔记</a></li>
 		        
-					<li style="width: 25%"><a href="/categories/算法">算法</a></li>
+					<li style="width: 20%"><a href="/categories/算法">算法</a></li>
 		        
-					<li style="width: 25%"><a href="/categories/大数据">大数据</a></li>
+					<li style="width: 20%"><a href="/categories/大数据">大数据</a></li>
+		        
+					<li style="width: 20%"><a href="/categories/数据库">数据库</a></li>
 		        
 				</ul>
 			</nav>
@@ -151,6 +157,145 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-Centos-7安装Mysql" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/01/25/Centos-7安装Mysql/">Centos 7安装Mysql</a>
+    </h1>
+  
+
+        
+        <a href="/2022/01/25/Centos-7安装Mysql/" class="archive-article-date">
+  	<time datetime="2022-01-25T13:27:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-25</time>
+</a>
+        
+      </header>
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          <h3 id="安装mysql服务"><a href="#安装mysql服务" class="headerlink" title="安装mysql服务"></a>安装mysql服务</h3><ul>
+<li><code>wget -i -c http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm</code></li>
+<li><code>yum -y install mysql57-community-release-el7-10.noarch.rpm</code></li>
+<li>yum -y install mysql-community-server</li>
+<li>如果安装过程中出现如下类似信息：</li>
+</ul>
+<blockquote>
+<p>Failing package is: mysql-community-libs-compat-5.7.37-1.el7.x86_64<br>GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql</p>
+</blockquote>
+<ul>
+<li>更新GPG<ul>
+<li><code>rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="启动mysql服务"><a href="#启动mysql服务" class="headerlink" title="启动mysql服务"></a>启动mysql服务</h3><ul>
+<li><code>systemctl start  mysqld.service</code></li>
+<li>设置mysql开机自启<ul>
+<li><code>systemctl enable mysqld</code></li>
+</ul>
+</li>
+<li>查看mysql状态<ul>
+<li><code>systemctl status mysqld.service</code></li>
+</ul>
+</li>
+<li>查看mysql临时密码<ul>
+<li><code>grep &quot;password&quot; /var/log/mysqld.log</code></li>
+</ul>
+</li>
+<li>登陆mysql<ul>
+<li><code>mysql -uroot -p</code></li>
+</ul>
+</li>
+<li>修改mysql密码<ul>
+<li><code>set global validate_password_policy=0;</code></li>
+<li><code>set global validate_password_length=1;</code></li>
+<li><code>alter user &#39;root&#39;@&#39;localhost&#39; identified by &#39;123456&#39;;</code></li>
+</ul>
+</li>
+<li>配置用户权限及授权<ul>
+<li><code>grant all on *.* to &#39;root&#39;@&#39;%&#39; identified by &#39;123456&#39;;</code></li>
+<li><code>grant all on *.* to &#39;root&#39;@&#39;localhost&#39; identified by &#39;123456&#39;;</code></li>
+<li><code>grant all on *.* to &#39;root&#39;@&#39;master&#39; identified by &#39;123456&#39;;</code></li>
+<li><code>flush privileges;</code></li>
+</ul>
+</li>
+<li>取消自动更新<ul>
+<li><code>yum -y remove mysql57-community-release-el7-10.noarch</code></li>
+</ul>
+</li>
+</ul>
+
+        
+
+        
+    </div>
+    
+
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据库//" class="article-tag-list-link color4">数据库</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/01/25/Centos-7安装Mysql/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-VMware安装Hadoop环境" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -1300,95 +1445,6 @@
 
 
   
-    <article id="post-亮灭屏流程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/03/亮灭屏流程/">亮灭屏流程</a>
-    </h1>
-  
-
-        
-        <a href="/2018/04/03/亮灭屏流程/" class="archive-article-date">
-  	<time datetime="2018-04-03T03:39:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-03</time>
-</a>
-        
-      </header>
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          <p>&emsp;&emsp;用户按了 power 键之后，首先涉及到的是 Input 的流程，按键事件最终会从 InputManagerService 传到 PhoneWindowManager 处理，最终这个按键事件是传递到 PhoneWindowManager 的<code>interceptKeyBeforeQueue()</code>方法中。</p>
-
-        
-
-        
-    </div>
-    
-
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/笔记//" class="article-tag-list-link color3">笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/03/亮灭屏流程/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1495,15 +1551,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">

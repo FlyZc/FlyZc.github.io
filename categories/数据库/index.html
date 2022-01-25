@@ -6,20 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="FlyZc.github.io">
-  <title>ANR-ContentProvider | Welcome to Philo&#39;s World</title>
+  <title>Category: 数据库 | Welcome to Philo&#39;s World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="&amp;emsp;&amp;emsp; 当 ActivityManager 线程中的 AMS.MainHandler 收到 CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG 消息时会触发 ContentProvider Timeout 事件。ContentProvider 超时与 Provider 进程启动过程相关， CONTENT_PROVIDER_PUBLISH_TIMEOUT =">
-<meta name="keywords" content="Android,四大组件">
-<meta property="og:type" content="article">
-<meta property="og:title" content="ANR-ContentProvider">
-<meta property="og:url" content="FlyZc.github.io/2018/02/24/ANR-ContentProvider/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Welcome to Philo&#39;s World">
+<meta property="og:url" content="FlyZc.github.io/categories/数据库/index.html">
 <meta property="og:site_name" content="Welcome to Philo&#39;s World">
-<meta property="og:description" content="&amp;emsp;&amp;emsp; 当 ActivityManager 线程中的 AMS.MainHandler 收到 CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG 消息时会触发 ContentProvider Timeout 事件。ContentProvider 超时与 Provider 进程启动过程相关， CONTENT_PROVIDER_PUBLISH_TIMEOUT =">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-04T05:59:18.673Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ANR-ContentProvider">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp; 当 ActivityManager 线程中的 AMS.MainHandler 收到 CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG 消息时会触发 ContentProvider Timeout 事件。ContentProvider 超时与 Provider 进程启动过程相关， CONTENT_PROVIDER_PUBLISH_TIMEOUT =">
+<meta name="twitter:title" content="Welcome to Philo&#39;s World">
   
     <link rel="alternative" href="/atom.xml" title="Welcome to Philo&#39;s World" type="application/atom+xml">
   
@@ -161,215 +156,71 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ANR-ContentProvider" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      ANR-ContentProvider
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2022" class="archive-year">2022</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2022/01/25/Centos-7安装Mysql/" class="archive-article-date">
+  	<time datetime="2022-01-25T13:27:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-25</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2022/01/25/Centos-7安装Mysql/">Centos 7安装Mysql</a>
     </h1>
   
 
-        
-        <a href="/2018/02/24/ANR-ContentProvider/" class="archive-article-date">
-  	<time datetime="2018-02-24T06:09:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-24</time>
-</a>
-        
-      </header>
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          <p>&emsp;&emsp; 当 ActivityManager 线程中的 AMS.MainHandler 收到 CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG 消息时会触发 ContentProvider Timeout 事件。ContentProvider 超时与 Provider 进程启动过程相关， CONTENT_PROVIDER_PUBLISH_TIMEOUT = 10s。</p>
-<h4 id="埋炸弹"><a href="#埋炸弹" class="headerlink" title="埋炸弹"></a>埋炸弹</h4><p>&emsp;&emsp;在 Provider 启动的过程中，埋炸弹会发生在进程创建的阶段，进程创建后会调用<code>AMS.attachApplicationLocked()</code>进入 system_server 进程。在<code>AMS.attachApplicationLocked()</code>方法中，app 进程存在正在启动中的 provider ,则超时10s后发送 CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG 消息。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (providers != <span class="keyword">null</span> &amp;&amp; checkAppInLaunchingProvidersLocked(app)) &#123;</span><br><span class="line">    Message msg = mHandler.obtainMessage(CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG);</span><br><span class="line">    msg.obj = app;</span><br><span class="line">    mHandler.sendMessageDelayed(msg, CONTENT_PROVIDER_PUBLISH_TIMEOUT);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="拆炸弹"><a href="#拆炸弹" class="headerlink" title="拆炸弹"></a>拆炸弹</h4><p>&emsp;&emsp;当 provider 通过<code>AMS.publishContentProviders(...)</code>成功 publish 之后,便会通过<code>mHandler.removeMessages(...)</code>拆除该炸弹。</p>
-<h4 id="引爆炸弹"><a href="#引爆炸弹" class="headerlink" title="引爆炸弹"></a>引爆炸弹</h4><p>&emsp;&emsp;在前面埋炸弹的过程，会通过<code>mHandler.sendMessageDelayed(msg, CONTENT_PROVIDER_PUBLISH_TIMEOUT)</code>来发送一个超时消息，那么在倒计时结束后便会向 system_server 进程中名为 ActivityManager 的 handler 线程发送 CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG 消息。该线程通过<code>handleMessage(...)</code>的方式，来处理超时消息。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">handleMessage(...)</span><br><span class="line">    AMS.processContentProviderPublishTimedOutLocked(...)</span><br><span class="line">        AMS.cleanupAppInLaunchingProvidersLocked(...)</span><br><span class="line">            AMS.removeDyingProviderLocked(...)</span><br><span class="line">        AMS.removeProcessLocked(...)</span><br></pre></td></tr></table></figure></p>
-<p>&emsp;&emsp;<code>removeDyingProviderLocked()</code>方法的作用是移除死亡的 provider，在处理的过程中跟 provider 的类型有关：</p>
-<ul>
-<li>对于 stable 类型的 provider (即conn.stableCount &gt; 0),则会杀掉所有跟该 provider 建立 stable 连接的非 persistent 进程</li>
-<li>对于 unstable 类型的 provider (即conn.unstableCount &gt; 0),并不会导致 client 进程被级联所杀</li>
-</ul>
-<p>&emsp;&emsp;对于 Service, Broadcast 发生 ANR 之后,最终都会调用 AMS.appNotResponding 。对于 provider ,在其进程启动时 publish 过程可能会出现 ANR, 则会直接杀进程以及清理相应信息,而不会弹出 ANR 的对话框。</p>
-
-        
-
-        
-          <div class="page-reward">
-            <a href="javascript:;" class="page-reward-btn tooltip-top">
-              <div class="tooltip tooltip-east">
-              <span class="tooltip-item">
-                赏
-              </span>
-              <span class="tooltip-content">
-                <span class="tooltip-text">
-                  <span class="tooltip-inner">
-                    <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢！<i class="icon icon-quo-right"></i></p>
-                    <div class="reward-box">
-                      
-                      
-                    </div>
-                  </span>
-                </span>
-              </span>
-            </div>
-            </a>
-          </div>
-        
-    </div>
-    
-
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">四大组件</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Mysql</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/笔记//" class="article-tag-list-link color3">笔记</a>
+        			<a href="/categories/数据库//" class="article-tag-list-link color4">数据库</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http:FlyZc.github.io/2018/02/24/ANR-ContentProvider/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2018/03/11/Git/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Git使用总结
-        
-      </div>
-    </a>
   
   
-    <a href="/2018/02/24/ANR-Broadcast/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">ANR-Broadcast</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
-  
-  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script>
-  var cloudTieConfig = {
-    url: "FlyZc.github.io/2018/02/24/ANR-ContentProvider/", 
-    sourceId: "ANR-ContentProvider",
-    productKey: "true",
-    target: "cloud-tie-wrapper"
-  };
-</script>
-<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+    </div></section>
   
 
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -389,10 +240,10 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
-		isCategory: false,
+		isCategory: true,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",

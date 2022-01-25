@@ -61,6 +61,8 @@
 	        
 				<li><a href="/categories/大数据">大数据</a></li>
 	        
+				<li><a href="/categories/数据库">数据库</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -115,6 +117,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,13 +133,15 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 20%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/categories/笔记">笔记</a></li>
+					<li style="width: 20%"><a href="/categories/笔记">笔记</a></li>
 		        
-					<li style="width: 25%"><a href="/categories/算法">算法</a></li>
+					<li style="width: 20%"><a href="/categories/算法">算法</a></li>
 		        
-					<li style="width: 25%"><a href="/categories/大数据">大数据</a></li>
+					<li style="width: 20%"><a href="/categories/大数据">大数据</a></li>
+		        
+					<li style="width: 20%"><a href="/categories/数据库">数据库</a></li>
 		        
 				</ul>
 			</nav>
@@ -151,6 +157,106 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-Binder通信" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/12/Binder通信/">Binder通信</a>
+    </h1>
+  
+
+        
+        <a href="/2018/02/12/Binder通信/" class="archive-article-date">
+  	<time datetime="2018-02-12T03:23:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-12</time>
+</a>
+        
+      </header>
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          <h5 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h5><p>TCP/IP五层通信架构    </p>
+<ul>
+<li>应用层：直接为用户提供服务 </li>
+<li>传输层：传输的是Segment报文段(TCP)或者Datagram数据报(UDP数据)</li>
+<li>网络层：传输的是Package包</li>
+<li>数据链路层：传输的是Frame帧</li>
+<li>物理层：传输的是Bit比特</li>
+</ul>
+<p>Binder IPC原理</p>
+<p>&emsp;&emsp; Binder 通信采用C/S架构，包含Client、Server、Service Manager以及Binder驱动。其中ServiceManager用于管理系统中的各种服务。Client端和Server端通信时都需要先获取 Service Manager 接口。AMS需要通过Service Manager注册服务， Client端在使用AMS之前需要通过Service Manager获取服务，也就是首先获得AMS的代理类AMP。 获取到AMP代理类之后，就可以跟AMS通信了。</p>
+<p>&emsp;&emsp;Client,Server,Service Manager之间不是直接交互的，都通过与 Binder Driver 进行交互的，从而实现 IPC 通信方式。其中 Binder 驱动位于内核空间，Client,Server,Service Manager位于用户空间。Binder 驱动和 Service Manager 可以看做是 Android 平台的基础架构，而 Client 和 Server 是 Android 的应用层。</p>
+<p>&emsp;&emsp;不管是注册服务、请求服务还是使用服务，每次都会经历一个完整的 Binder IPC 的过程。</p>
+
+        
+
+        
+    </div>
+    
+
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/笔记//" class="article-tag-list-link color3">笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/02/12/Binder通信/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-ContentProvider" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -618,15 +724,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
