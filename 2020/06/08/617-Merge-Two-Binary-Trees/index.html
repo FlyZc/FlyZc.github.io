@@ -16,12 +16,12 @@
 <meta property="og:site_name" content="Welcome to Philo&#39;s World">
 <meta property="og:description" content="DescriptionGiven two binary trees and imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not. You need to merge them into a new b">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="FlyZc.github.io/2020/06/08/617-Merge-Two-Binary-Trees/617-Merge-Two-Binary-Trees/61701.png">
-<meta property="og:updated_time" content="2020-06-09T14:42:39.133Z">
+<meta property="og:image" content="https://blogpic-1301978692.cos.ap-chongqing.myqcloud.com/bolg/mgtree.png">
+<meta property="og:updated_time" content="2022-01-25T07:10:30.708Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="617-Merge Two Binary Trees">
 <meta name="twitter:description" content="DescriptionGiven two binary trees and imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not. You need to merge them into a new b">
-<meta name="twitter:image" content="FlyZc.github.io/2020/06/08/617-Merge-Two-Binary-Trees/617-Merge-Two-Binary-Trees/61701.png">
+<meta name="twitter:image" content="https://blogpic-1301978692.cos.ap-chongqing.myqcloud.com/bolg/mgtree.png">
   
     <link rel="alternative" href="/atom.xml" title="Welcome to Philo&#39;s World" type="application/atom+xml">
   
@@ -182,10 +182,9 @@
           <h5 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h5><p>Given two binary trees and imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not.</p>
 <p>You need to merge them into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of new tree.</p>
 <p>Example 1:</p>
-<div align="center"><img src="617-Merge-Two-Binary-Trees/61701.png"> </div>
-
-<p><strong>Note:</strong> The merging process must start from the root nodes of both trees.</p>
+<p><img src="https://blogpic-1301978692.cos.ap-chongqing.myqcloud.com/bolg/mgtree.png" alt="image"><br><strong>Note:</strong> The merging process must start from the root nodes of both trees.</p>
 <h5 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode left;</span></span><br><span class="line"><span class="comment"> *     TreeNode right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">mergeTrees</span><span class="params">(TreeNode t1, TreeNode t2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (t1 == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> t2;</span><br><span class="line">        Stack &lt; TreeNode[] &gt; stack = <span class="keyword">new</span> Stack &lt; &gt; ();</span><br><span class="line">        stack.push(<span class="keyword">new</span> TreeNode[] &#123;t1, t2&#125;);</span><br><span class="line">        <span class="keyword">while</span> (!stack.isEmpty()) &#123;</span><br><span class="line">            TreeNode[] t = stack.pop();</span><br><span class="line">            <span class="keyword">if</span> (t[<span class="number">0</span>] == <span class="keyword">null</span> || t[<span class="number">1</span>] == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            t[<span class="number">0</span>].val += t[<span class="number">1</span>].val;</span><br><span class="line">            <span class="comment">//right first</span></span><br><span class="line">            <span class="keyword">if</span> (t[<span class="number">0</span>].right == <span class="keyword">null</span>) &#123;</span><br><span class="line">                t[<span class="number">0</span>].right = t[<span class="number">1</span>].right;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                stack.push(<span class="keyword">new</span> TreeNode[] &#123;t[<span class="number">0</span>].right, t[<span class="number">1</span>].right&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//left</span></span><br><span class="line">            <span class="keyword">if</span> (t[<span class="number">0</span>].left == <span class="keyword">null</span>) &#123;</span><br><span class="line">                t[<span class="number">0</span>].left = t[<span class="number">1</span>].left;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                stack.push(<span class="keyword">new</span> TreeNode[] &#123;t[<span class="number">0</span>].left, t[<span class="number">1</span>].left&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> t1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
         
 
         
@@ -467,11 +466,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
