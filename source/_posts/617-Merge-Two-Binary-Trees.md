@@ -15,8 +15,7 @@ You need to merge them into a new binary tree. The merge rule is that if two nod
 
 Example 1:
 
-<div align=center><img src="617-Merge-Two-Binary-Trees/61701.png"> </div>
-
+![image](https://blogpic-1301978692.cos.ap-chongqing.myqcloud.com/bolg/mgtree.png)
 **Note:** The merging process must start from the root nodes of both trees.
 
 ##### Code
