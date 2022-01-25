@@ -22,27 +22,27 @@ categories:
 &emsp;&emsp; `crashApplication(...)`是 AppErrors 类中的方法，
 
 ```java
-	AppErrors.crashApplication(...)
-		AppErrors.crashApplicationInner(...)
-			AppErrors.makeAppCrashingLocked(...)
+AppErrors.crashApplication(...)
+    AppErrors.crashApplicationInner(...)
+        AppErrors.makeAppCrashingLocked(...)
 ```
 
 &emsp;&emsp;调用了`makeAppCrashingLocked(...)`来继续处理 crash 流程，还需要做的事情就是发送消息 SHOW_ERROR_MSG ，弹出提示 crash 的对话框，等待用户选择。进入到`makeAppCrashingLocked(...)`方法的执行过程中，需要做的事情就是先把 crash 信息封装到 crashingReport 对象中。
 
 ```java
-	makeAppCrashingLocked(...)
-		app.crashingReport = generateProcessError(...)
-		startAppProblemLocked(app)
-		app.stopFreezingAllLocked()
-		return handleAppCrashLocked(...)
+makeAppCrashingLocked(...)
+    app.crashingReport = generateProcessError(...)
+    startAppProblemLocked(app)
+    app.stopFreezingAllLocked()
+    return handleAppCrashLocked(...)
 ```
 
 &emsp;&emsp;那么在`startAppProblemLocked(app)`方法中，
 
 ```java
-	startAppProblemLocked(app)
-		app.errorReportReceiver = ApplicationErrorReport.getErrorReportReceiver(...)
-		skipCurrentReceiverLocked(app)
+startAppProblemLocked(app)
+    app.errorReportReceiver = ApplicationErrorReport.getErrorReportReceiver(...)
+    skipCurrentReceiverLocked(app)
 ```
 
 &emsp;&emsp;会获取当前用户下的 crash 应用的 error receiver，然后会忽略当前 app 的广播接收。在忽略当前 app 的广播接收过程中，其实是针对每个广播队列，都会执行对应队列的`skipCurrentReceiverLocked(app)`方法来结束 app 进程对应的广播的接收。
@@ -50,10 +50,10 @@ categories:
 &emsp;&emsp;在`startAppProblemLocked(app)`执行完了之后，便会执行`stopFreezingAllLocked()`来执行停止屏幕冻结的操作。
 
 ```java
-	ProcessRecord.stopFreezingAllLocked()
-		activities.get(i).stopFreezingScreenLocked(force:true)    //ActivityRecord.stopFreezingScreenLocked
-			service.mWindowManager.stopFreezingScreen(appToken, force)	//WMS.stopFreezingScreen
-				WMS.stopFreezingDisplayLocked()
+ProcessRecord.stopFreezingAllLocked()
+    activities.get(i).stopFreezingScreenLocked(force:true)  //ActivityRecord.stopFreezingScreenLocked
+    service.mWindowManager.stopFreezingScreen(appToken, force)  //WMS.stopFreezingScreen
+    WMS.stopFreezingDisplayLocked()
 ```
 
 &emsp;&emsp;在`WMS.stopFreezingDisplayLocked()`方法中，做的事情包括:
@@ -69,20 +69,20 @@ categories:
 &emsp;&emsp;到此处`stopFreezingAllLocked()`方法执行结束，接下来就是需要执行`handleAppCrashLocked(...)`方法，在该方法中，主要的执行逻辑如下:
 
 * 当同一进程在时间间隔小于1分钟时连续两次 crash，则执行的情况如下：
-	* 对于非persistent进程：
-		* mStackSupervisor.handleAppCrashLocked(app)
-		* removeProcessLocked(app, false, false, “crash”)
-		* mStackSupervisor.resumeTopActivitiesLocked()
-	* 对于persistent进程，则只执行
-		* mStackSupervisor.resumeTopActivitiesLocked()
+  * 对于非persistent进程：
+    * mStackSupervisor.handleAppCrashLocked(app)
+    * removeProcessLocked(app, false, false, “crash”)
+    * mStackSupervisor.resumeTopActivitiesLocked()
+  * 对于persistent进程，则只执行
+    * mStackSupervisor.resumeTopActivitiesLocked()
 * 否则执行
-	* mStackSupervisor.finishTopRunningActivityLocked(app, reason)
+  * mStackSupervisor.finishTopRunningActivityLocked(app, reason)
 
 &emsp;&emsp;在方法`ActivityStackSupervisor.handleAppCrashLocked(app)`中，
 
 ```java
-	ASS.handleAppCrashLocked(app)
-		ActivityStack.handleAppCrashLocked(app)
+ASS.handleAppCrashLocked(app)
+ActivityStack.handleAppCrashLocked(app)
 ```
 
 &emsp;&emsp;这个方法的目的就是用来结束当前 activity ，在方法体内，通过遍历 stack 中 task ，获取到 task 中的所有 activity ，遍历所有 activities ，找到位于该 ProcessRecord 的所有 ActivityRecord ，通过调用`finishCurrentActivityLocked(...)`方法来结束该 activity 。
@@ -92,17 +92,17 @@ categories:
 &emsp;&emsp;下一步就是执行`ASS.resumeTopActivitiesLocked()`，该方法执行完，就完成了 activity 的 resume 的过程。
 
 ```java
-	ASS.resumeTopActivitiesLocked()
-		AS.resumeTopActivityLocked()
-			As.resumeTopActivityInnerLocked()
+ASS.resumeTopActivitiesLocked()
+    AS.resumeTopActivityLocked()
+        As.resumeTopActivityInnerLocked()
 ```
 
 &emsp;&emsp;针对另一种情况，在执行`ASS.finishTopRunningActivityLocked(...)`方法的时候，
 
 ```java
-	ASS.finishTopRunningActivityLocked(...)
-		stack.finishTopRunningActivityLocked(app, reason)
-			AS.finishActivityLocked(...)
+ASS.finishTopRunningActivityLocked(...)
+    stack.finishTopRunningActivityLocked(app, reason)
+    AS.finishActivityLocked(...)
 ```
 
 &emsp;&emsp;在这个方法中，最终会回调到 activity 的 pause 方法。最后处理完`makeAppCrashingLocked(...)`方法，则会再发送消息 SHOW_ERROR_MSG ，弹出提示 crash 的对话框。处理 SHOW_ERROR_MSG 的消息则是 UiHandler 通过 handleMessage 来完成的。系统会弹出提示 crash 的对话框，并阻塞等待用户选择是“退出”或 “退出并报告”，当用户不做任何选择时 5min 超时后，默认选择“退出”，当手机休眠时也默认选择“退出”。到这里，最后在 uncaughtException 中在 finally 语句块还有一个杀进程的动作，通过 finally 语句块中执行`Process.killProcess(...)`来保证彻底杀掉 crash 进程。
@@ -110,15 +110,13 @@ categories:
 &emsp;&emsp;最后还有一个 Binder 的死亡回调过程，在应用进程创建的过程中有一个`attachApplicationLocked()`方法的过程中便会创建死亡通知。当 binder 服务端挂了之后，便会通过 binder 的 DeathRecipient 来通知 AMS 进行相应的清理收尾工作。前面讲到 crash 的进程会被 kill 掉，那么当该进程被杀，则会回调到`binderDied()`方法。
 
 ```java
-	AMS.binderDied()
-		AMS.appDiedLocked()
-			AMS.handleAppDiedLocked(...)
-				AMS.cleanUpApplicationRecordLocked(...) 	//清理应用程序service, BroadcastReceiver, ContentProvider相关信息
-				app.activities.clear() 	//清理 activity 相关信息
+AMS.binderDied()
+    AMS.appDiedLocked()
+        AMS.handleAppDiedLocked(...)
+            AMS.cleanUpApplicationRecordLocked(...)  //清理应用程序service, BroadcastReceiver, ContentProvider相关信息
+                app.activities.clear()  //清理 activity 相关信息
 ```
 
 &emsp;&emsp;清理 ContentProvider 的过程，首先获取该进程已发表的 ContentProvider ，将 DyingProvider 清理掉，这包括 ContentProvider 的服务端和客户端都会被杀。还需要处理的就是正在启动并且有客户端正在等待的 ContentProvider 。最后就是取消已连接的 ContentProvider 的注册。清理 BroadcastReceiver 主要就是取消注册的广播接收者。
 
 &emsp;&emsp;当 crash 进程执行 kill 操作后，进程被杀。由于 crash 进程中拥有一个 Binder 服务端 ApplicationThread ，而应用进程在创建过程调用`attachApplicationLocked()`，从而 attach 到 system_server 进程，在 system_server 进程内有一个 ApplicationThreadProxy ，这是相对应的 Binder 客户端。当 Binder 服务端 ApplicationThread 所在进程(即 crash 进程)挂掉后，则 Binder 客户端能收到相应的死亡通知，从而进入 binderDied 流程。
-
-
