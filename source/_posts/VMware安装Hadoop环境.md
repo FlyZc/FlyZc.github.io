@@ -23,7 +23,7 @@ categories:
  `systemctl restart network`
 
 * 配置host信息
-
+  
   ```vim
   vim /etc/hosts
 
