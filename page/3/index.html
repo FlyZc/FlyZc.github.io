@@ -158,6 +158,222 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-ANR-Broadcast" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/24/ANR-Broadcast/">ANR-Broadcast</a>
+    </h1>
+  
+
+        
+        <a href="/2018/02/24/ANR-Broadcast/" class="archive-article-date">
+  	<time datetime="2018-02-24T02:23:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-24</time>
+</a>
+        
+      </header>
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          <p>&emsp;&emsp; 串行广播需要考虑超时的情况，接收者是串行处理的，前一个 receiver 处理慢，会影响后一个 receiver 。对于并行广播则是通过一个循环一次性向所有的receiver分发广播事件，所以不存在彼此影响的问题，则没有广播超时。<br>串行广播通常有两种超时情况：</p>
+<ul>
+<li>某个广播总处理时间 &gt; 2 <em> receiver 总个数 </em> mTimeoutPeriod</li>
+<li>某个 receiver 的执行时间超过 mTimeoutPeriod</li>
+</ul>
+<p>&emsp;&emsp; BroadcastQueue.BroadcastHandler 收到 BROADCAST_TIMEOUT_MSG 消息时会触发 ANR 事件。广播队列有两种：</p>
+<ul>
+<li>foreground 队列：对于前台广播，超时设置为 BROADCAST_FG_TIMEOUT = 10s</li>
+<li>background 队列：对于后台广播，超时设置为 BROADCAST_BG_TIMEOUT = 60s</li>
+</ul>
+<h4 id="埋炸弹"><a href="#埋炸弹" class="headerlink" title="埋炸弹"></a>埋炸弹</h4><p>&emsp;&emsp;processNextBroadcast 来处理广播时，首先处理并行广播,再处理当前有序广播,最后获取并处理下条有序广播。在这个过程中，在处理有序广播时，首先会获取该广播的所有接受者，然后就需要判断此时该广播的总时间是否超时，如果超时那么需要结束这条广播。如果没有超时，那么往下走就是进入处理广播消息的过程，处理完广播消息，系统需要获取下条有序广播，那么在获取下条有序广播的时候就有一个埋炸弹的过程，埋炸弹就是通过<code>setBroadcastTimeoutLocked(timeoutTime)</code>给该广播设置一个时间戳，以便后面来处理广播消息时判断是否已经超时。这需要在<code>setBroadcastTimeoutLocked(...)</code>方法中设置定时广播 BROADCAST_TIMEOUT_MSG，即当前往后推 mTimeoutPeriod 时间广播还没处理完毕，则进入广播超时流程。</p>
+<h4 id="拆炸弹"><a href="#拆炸弹" class="headerlink" title="拆炸弹"></a>拆炸弹</h4><p>&emsp;&emsp;正如前面说的在 processNextBroadcast 方法内，广播如果没有超时，那么会调用方法<code>performReceiveLocked(...)</code>来处理广播，执行完该方法之后，就会进行拆除炸弹的操作。拆除炸弹是通过<code>cancelBroadcastTimeoutLocked()</code>来移除广播超时消息 BROADCAST_TIMEOUT_MSG 。</p>
+<h4 id="引爆炸弹"><a href="#引爆炸弹" class="headerlink" title="引爆炸弹"></a>引爆炸弹</h4><p>&emsp;&emsp; 引爆炸弹的过程发生在 <code>broadcastTimeoutLocked()</code>方法中，首先判断是否有下列几种情况：</p>
+<ul>
+<li>mOrderedBroadcasts 已处理完成，则不会发生 anr</li>
+<li>正在执行 dexopt，则不会 anr</li>
+<li>系统还没有进入 ready 状态(mProcessesReady=false)，则不会anr</li>
+<li>如果当前正在执行的 receiver 没有超时，则重新设置广播超时，不会 anr</li>
+</ul>
+<p>&emsp;&emsp;如果不是上面的几种情况，那么会通过<code>mHandler.post(new AppNotResponding(app, anrMessage))</code>发送 AppNotResponding 的消息，此时会进入 ANR 处理流程。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">AppNotResponding</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 进入ANR处理流程</span></span><br><span class="line">        mService.appNotResponding(mApp, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">false</span>, mAnnotation);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+        
+
+        
+    </div>
+    
+
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">四大组件</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/笔记//" class="article-tag-list-link color3">笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/02/24/ANR-Broadcast/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-ANR-Service" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/13/ANR-Service/">ANR-Service</a>
+    </h1>
+  
+
+        
+        <a href="/2018/02/13/ANR-Service/" class="archive-article-date">
+  	<time datetime="2018-02-13T03:13:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-13</time>
+</a>
+        
+      </header>
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          <p>Service Timeout有两类:     </p>
+<ul>
+<li>对于前台服务，则超时为SERVICE_TIMEOUT = 20s       </li>
+<li>对于后台服务，则超时为SERVICE_BACKGROUND_TIMET = 200s     </li>
+</ul>
+<h5 id="埋炸弹"><a href="#埋炸弹" class="headerlink" title="埋炸弹"></a>埋炸弹</h5><p>&emsp;&emsp;与 Service 相关的 ANR，埋炸弹阶段出现在<code>realStartServiceLocked()</code>方法中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">realStartServiceLocked</span><br><span class="line">    bumpServiceExecutingLocked</span><br><span class="line">        scheduleServiceTimeoutLocked</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;在<code>realStartServiceLocked</code>方法中先是通过<code>bumpServiceExecutingLocked</code>发送一个delay消息(SERVICE_TIMEOUT_MSG)。而在<code>bumpServiceExecutingLocked</code>中是通过调用<code>scheduleServiceTimeoutLocked</code>来实现的。<br>在<code>scheduleServiceTimeoutLocked</code>方法中，如果超时后依旧没有 remove 掉该 SERVICE_TIME_OUT 消息，那么会进入到service timeout流程。此时炸弹已经埋下，如果不希望炸弹被引爆，那么就需要在炸弹爆炸之前拆除炸弹。</p>
+<h5 id="拆炸弹"><a href="#拆炸弹" class="headerlink" title="拆炸弹"></a>拆炸弹</h5><p>&emsp;&emsp;拆炸弹的过程发生在目标进程的主线程调用<code>handleCreateService</code>的过程中。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">handleCreateService</span><br><span class="line">    serviceDoneExecuting</span><br><span class="line">        removeMessages</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;在<code>handleCreateService</code>方法的处理过程中，会创建目标服务对象，以及回调onCreate方法，最后会执行<code>ActivityManagerNative.getDefault().serviceDoneExecuting</code>，这个过程是经过多次调用最后回到system server进程来执行 serviceDoneExecuting 以达到移除服务启动超时消息的目的。 </p>
+<h5 id="引爆炸弹"><a href="#引爆炸弹" class="headerlink" title="引爆炸弹"></a>引爆炸弹</h5><p>&emsp;&emsp;如果没有在指定时间之内拆掉炸弹，那么炸弹爆炸后会导致ANR。当计时结束之后，system server 进程中名为ActivityManager 的 Handler 线程会收到 SERVICE_TIMEOUT_MSG 的消息，ActivityManager 通过 handler 的通信方式，将该 MSG 发送给 MainHandler 线程，MainHandler线程从消息队列中获得该消息，通过handleMessage 方法来进入serviceTimeout过程，最终便是调用<code>appNotResponding(...)</code>方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">handleMessage(...)</span><br><span class="line">    AS.serviceTimeout(...)</span><br><span class="line">        AMS.appNotResponding(...)</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;Service 运行在主线程里面，在 Service 里编写了非常耗时的代码会出现 ANR。可以在 Service 中再创建一个子线程，然后在这里去处理耗时逻辑，或者使用远程Service的方式。但是在使用远程Service的方式的时候，Service 和 Activity 不在同一个进程，这个时候，不能通过传统的方式来建立关联，需要使用 AIDL 来进行跨进程通信。远程服务是独立的进程，进程名格式为所在包名你指定的<code>android:process</code>字符串。</p>
+
+        
+
+        
+    </div>
+    
+
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">四大组件</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/笔记//" class="article-tag-list-link color3">笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/02/13/ANR-Service/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Binder通信" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -732,7 +948,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color5">Hive</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -740,7 +960,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">快捷键</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
