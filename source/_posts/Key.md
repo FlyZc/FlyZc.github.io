@@ -7,7 +7,7 @@ categories:
     - 笔记
 ---
 
-##### IDEA   
+##### IDEA
 
 * `iter`&emsp;&emsp;自动补全foreach()
 * `itar`&emsp;&emsp;自动补全for()
@@ -59,7 +59,7 @@ categories:
 ##### 网络
 
 * 查看连接的 wifi 密码
-    * `cd/`
-    * `netsh`
-    * `wlan show profile`
-    * `wlan show profile` + 目标 wifi 名称 + `key=clear`
+  * `cd/`
+  * `netsh`
+  * `wlan show profile`
+  * `wlan show profile` + 目标 wifi 名称 + `key=clear`
