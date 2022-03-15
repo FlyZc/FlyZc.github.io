@@ -106,8 +106,8 @@ profile:
 
 # Sidebar navigation links
 menu:
-  📝 Home: /
-  🐈 About: /about
+  🏠 Home: /
+  📄 About: /about
   # 🔗 Links: /links
   🔍 Search: /search
 
