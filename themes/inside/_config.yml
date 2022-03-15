@@ -10,7 +10,7 @@ appearance:
   # Border color, default '#e0e0e0'
   border_color:
   # body background, default '#f5f7fa'
-  background: images/dust_scratches.png
+  background: https://blogpic-1301978692.cos.ap-chongqing.myqcloud.com/bolg/dust_scratches.png
   # Sidebar background (when opened), default to accent_color    
   sidebar_background:
   # Card background, default '#fff'
@@ -280,7 +280,7 @@ reward:
   text: 坐下喝杯咖啡吧 ☕.
   methods:
   - name: wechat
-    qrcode: images/wechat.png
+    qrcode: https://blogpic-1301978692.cos.ap-chongqing.myqcloud.com/bolg/wechat.png
     color: '#09bb07'
 
   #Payment Methods
