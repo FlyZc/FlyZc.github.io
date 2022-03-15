@@ -97,3 +97,5 @@ export PATH=$PATH:$HIVE_HOME/bin
 * scp -r /usr/local/src/apache-hive-1.2.2-bin root@slave2:/usr/local/src/apache-hive-1.2.2-bin
 
 ### 启动Hive
+
+* hive
