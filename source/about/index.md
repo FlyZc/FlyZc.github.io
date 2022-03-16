@@ -10,7 +10,7 @@ copyright: false
 <br/>
 <center>及其有干，尚未有枝；</center>
 <br/>
-<center>枝而后叶，叶而后花实。</center>
+<center>枝而后叶，叶而后花、实。</center>
 <br/>
 <center>初种根时，只管栽培灌溉，</center>
 <br/>
