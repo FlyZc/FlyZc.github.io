@@ -2,22 +2,25 @@
 title: VMware安装Hadoop环境
 date: 2022-01-24 22:32:39
 tags:
-	- Hadoop
+  - Hadoop
 categories:
-	- 大数据
+  - 大数据
 ---
 
 ### 配置Master节点环境
 
 * 配置IP信息
  `vi /etc/sysconfig/network-scripts/ifcfg-ens33`
- ![image](https://blogpic-1301978692.cos.ap-chongqing.myqcloud.com/bolg/ifcfg.png)
+
+<div align=center><img src="https://blogpic-1301978692.cos.ap-chongqing.myqcloud.com/bolg/ifcfg.png" width = 500> </div>
 
 * 虚拟机NAT设置
- ![image](https://blogpic-1301978692.cos.ap-chongqing.myqcloud.com/bolg/natcfg.png)
+
+<div align=center><img src="https://blogpic-1301978692.cos.ap-chongqing.myqcloud.com/bolg/natcfg.png" width = 500></div>
 
 * 虚拟机DHCP设置
- ![image](https://blogpic-1301978692.cos.ap-chongqing.myqcloud.com/bolg/dhcpcfg.png)
+
+ <div align = center><image src = "https://blogpic-1301978692.cos.ap-chongqing.myqcloud.com/bolg/dhcpcfg.png" width =500></div>
 
 * 重启网络
  `systemctl restart network`

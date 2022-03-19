@@ -42,3 +42,4 @@ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
   * `flush privileges;`
 * 取消自动更新
   * `yum -y remove mysql57-community-release-el7-10.noarch`
+  

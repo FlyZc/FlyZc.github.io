@@ -2,7 +2,7 @@
 title: Hive 1.2.2环境搭建
 date: 2022-02-02 20:09:16
 tags:
-	- Hive
+        - Hive
 categories:
 	- 大数据
 ---
