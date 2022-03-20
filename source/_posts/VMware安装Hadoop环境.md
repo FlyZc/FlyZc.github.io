@@ -40,14 +40,14 @@ categories:
   ```vim
   vim /etc/sysconfig/network
   NETWORKING=yes
-  HOSTNAME=masterr
+  HOSTNAME=master
   ```
 
 * 配置hostname
 
   ```vim
   vim /etc/hostname
-  Master
+  master
   ```
 
 * 关闭网络管理
